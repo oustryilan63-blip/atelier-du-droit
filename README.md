@@ -2,7 +2,7 @@
 
 Espace personnel de révision du semestre 1 de L1 Droit, publié sur GitHub Pages.
 
-Le site rassemble les documents transmis pour le droit public, le droit privé et les institutions internationales, organisés en 30 chapitres. Il propose 119 flashcards, 30 questions de quiz avec correction, 60 repères chronologiques, neuf schémas de révision, treize fiches de lecture d’articles officiels et treize entrées consacrées aux auteurs présents dans les fiches.
+Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 33 chapitres. Il propose 176 flashcards, 33 questions de quiz avec correction, 104 repères chronologiques, douze schémas de révision, treize fiches de lecture d’articles officiels et dix-neuf entrées consacrées aux auteurs et juristes.
 
 [Ouvrir le site](https://oustryilan63-blip.github.io/atelier-du-droit/)
 
@@ -13,8 +13,9 @@ Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js
 ## Provenance et périmètre
 
 - Les cours sont les notes transmises par l’étudiante. Elles sont conservées sans correction silencieuse.
-- Les fiches sont les documents de révision transmis, avec leurs propres corrections et compléments.
-- Les définitions et chronologies reprennent les fiches. Soixante cartes de compréhension et trente questions de quiz ont été ajoutées à partir des fiches, avec leurs corrections et leur passage source. Chaque chapitre possède au moins deux cartes de compréhension et une question de quiz.
+- Les trois premières fiches sont les documents de révision transmis, avec leurs propres corrections et compléments. La fiche d’histoire du droit a été préparée à partir du cours actuel, jusqu’au CM5, en reprenant la présentation de la fiche d’institutions internationales.
+- Les définitions et chronologies sont issues des fiches. Soixante-six cartes de compréhension et trente-trois questions de quiz ont été ajoutées, avec leurs corrections et leur passage source. Chaque chapitre possède au moins deux cartes de compréhension et une question de quiz.
+- L’histoire du droit couvre Rome, l’époque franque et les sources médiévales jusqu’au renouveau de la législation royale. La suite du semestre reste à transmettre. L’archive de l’année précédente est consultable séparément ; elle n’entre ni dans la fiche actuelle, ni dans les exercices, ni dans les résultats de recherche. Le fichier Word original téléchargeable contient le cours actuel et son archive, sans modification.
 - Les schémas sont des supports de révision ajoutés à partir des fiches.
 - Les fiches de lecture d’articles sont des compléments ajoutés, avec des liens vers Légifrance, le Conseil constitutionnel et les Nations Unies. Elles restent distinctes des consignes du professeur.
 - Le plan officiel et les ressources UNJF sont issus de la copie locale du projet. Moodle reste la référence actuelle du cours d’institutions internationales.
