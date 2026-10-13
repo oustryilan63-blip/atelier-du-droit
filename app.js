@@ -1,0 +1,267 @@
+(() => {
+  'use strict';
+  const D = window.STUDY_DATA;
+  const KEY = 'atelier-droit:progress:v1' + (new URLSearchParams(location.search).has('verification') ? ':verification' : '');
+  const docs = Object.fromEntries(D.documents.map(d => [d.id, d]));
+  const subjects = Object.fromEntries(D.subjects.map(s => [s.id, s]));
+  const chapterById = Object.fromEntries(D.chapters.map(c => [c.id, c]));
+  const main = document.getElementById('main');
+  let state = { version: 1, chapters: {}, notes: {}, favorites: [], reviews: {} };
+  let storageAvailable = true;
+  let session = null;
+  let toastTimer;
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, x => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[x]));
+  const normalize = value => String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const icons = {
+    balance:'<path d="M12 3v18m-5 0h10M4 7h16M6 7l-4 8h8zm12 0l-4 8h8z"/><circle cx="12" cy="5" r="2"/>',
+    home:'<path d="m3 10 9-7 9 7v11H3zM9 21v-8h6v8"/>',
+    book:'<path d="M12 5v16M12 5C8 2 3 3 2 4v15c4-2 7-1 10 2 3-3 6-4 10-2V4c-1-1-6-2-10 1Z"/>',
+    cards:'<rect x="7" y="3" width="13" height="17" rx="2"/><path d="M4 7H3v15h13v-1m-5-12h5m-5 4h5"/>',
+    clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    globe:'<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/>',
+    arrow:'<path d="M4 12h16m-6-6 6 6-6 6"/>',
+    back:'<path d="M20 12H4m6-6-6 6 6 6"/>',
+    chevron:'<path d="m9 5 7 7-7 7"/>',
+    search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
+    check:'<path d="m5 12 4 4 10-10"/>',
+    star:'<path d="m12 3 2.8 5.8 6.4.9-4.6 4.5 1.1 6.4-5.7-3-5.7 3 1.1-6.4-4.6-4.5 6.4-.9z"/>',
+    timeline:'<path d="M5 3v18m0-15h14M5 12h10M5 18h14"/><circle cx="5" cy="6" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="5" cy="18" r="2"/>',
+    scheme:'<rect x="8" y="2" width="8" height="5" rx="1"/><path d="M12 7v5m-7 0h14M5 12v5m14-5v5"/><rect x="1" y="17" width="8" height="5" rx="1"/><rect x="15" y="17" width="8" height="5" rx="1"/>',
+    feather:'<path d="M20 3c-8-1-15 4-14 13l5-1c6-3 9-7 9-12ZM3 21 15 9m-8 8H4"/>',
+    folder:'<path d="M3 6V4h7l2 3h9v14H3V6z"/>',
+    settings:'<circle cx="12" cy="12" r="3"/><path d="m10 3-1 3-3 1-3-1-1 4 3 2v3l-2 2 3 3 3-1 3 1 1 3 4-1 1-3 3-1 3 1 1-4-3-2v-3l2-2-3-3-3 1-3-1-1-3z" transform="translate(0 -1) scale(.9)"/>',
+    lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
+    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/>',
+    download:'<path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/>',
+    upload:'<path d="M12 15V3m-4 4 4-4 4 4M4 16v5h16v-5"/>',
+    note:'<path d="M4 3h16v18H4zM8 8h8m-8 4h8m-8 4h5"/>',
+    menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+    external:'<path d="M14 3h7v7m0-7-11 11M10 3H3v18h18v-7"/>',
+    print:'<path d="M6 8V2h12v6M6 17H3V8h18v9h-3M6 14h12v8H6z"/>',
+    refresh:'<path d="M20 7v5h-5M4 17v-5h5m11 0a8 8 0 0 0-14-6m-2 6a8 8 0 0 0 14 6"/>',
+  };
+  const icon = (name, cls = '') => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true">${icons[name] || icons.book}</svg>`;
+  function cleanState(input) {
+    if (!input || input.version !== 1 || typeof input !== 'object') throw new Error('Format de sauvegarde non reconnu.');
+    const next = {version:1,chapters:{},notes:{},favorites:[],reviews:{}};
+    for (const [id,status] of Object.entries(input.chapters || {})) if(chapterById[id] && ['started','done'].includes(status)) next.chapters[id]=status;
+    for (const [id,text] of Object.entries(input.notes || {})) if(chapterById[id] && typeof text==='string' && text.length<=100000) next.notes[id]=text;
+    next.favorites = [...new Set((Array.isArray(input.favorites)?input.favorites:[]).filter(id=>chapterById[id]))];
+    for (const [id,r] of Object.entries(input.reviews || {})) if(D.cards.some(c=>c.id===id) && r && Number.isFinite(r.due) && r.due>0 && r.due<1e14) next.reviews[id]={due:r.due,seen:Math.max(1,Math.min(100000,Number(r.seen)||1)),grade:r.grade==='again'?'again':'known'};
+    return next;
+  }
+  try { const saved = localStorage.getItem(KEY); if(saved) state = cleanState(JSON.parse(saved)); }
+  catch { storageAvailable = false; }
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); return true; }
+    catch { storageAvailable=false; showToast('Enregistrement indisponible : exporte ta progression pour la conserver.'); return false; }
+  }
+  function showToast(message) {
+    const el=document.getElementById('toast'); el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3500);
+  }
+  const done = subject => D.chapters.filter(c=>(!subject||c.subject===subject)&&state.chapters[c.id]==='done').length;
+  const dueCards = subject => D.cards.filter(c=>(!subject||subject==='all'||c.subject===subject)&&(!state.reviews[c.id]||state.reviews[c.id].due<=Date.now()));
+  function sourceLink(source, label = 'Voir dans ta fiche') {
+    return `<a class="source-link" href="#document/${esc(source.doc)}/${source.index}">${icon('book')}${esc(label)}</a>`;
+  }
+  function button(label, href, primary=false, symbol='arrow') {
+    return `<a class="btn ${primary?'primary':''}" href="${esc(href)}">${esc(label)}${icon(symbol)}</a>`;
+  }
+  function header(title, subtitle, eyebrow='L1 DROIT · SEMESTRE 1', actions='') {
+    return `<div class="page-head ${actions?'row':''}"><div><span class="eyebrow">${esc(eyebrow)}</span><h1>${esc(title)}</h1>${subtitle?`<p class="lead">${esc(subtitle)}</p>`:''}</div>${actions?`<div class="page-actions">${actions}</div>`:''}</div>`;
+  }
+  function empty(title,text,action='') { return `<div class="empty-state">${icon('book')}<h2>${esc(title)}</h2><p>${esc(text)}</p>${action}</div>`; }
+  function notice(text) {return `<div class="notice">${icon('info')}<p>${esc(text)}</p></div>`;}
+  function tabs(items,active) {return `<nav class="section-tabs" aria-label="Sections">${items.map(([id,label,url])=>`<a href="${url}" class="${active===id?'active':''}" ${active===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav>`;}
+  function filters(page, selected='all') {return `<nav class="filters" aria-label="Filtrer par matière">${[['all','Toutes les matières'],...D.subjects.map(s=>[s.id,s.title])].map(([id,title])=>`<a class="filter-chip ${selected===id?'active':''}" href="#${page}/${id}" ${selected===id?'aria-current="page"':''}>${esc(title)}</a>`).join('')}</nav>`;}
+  const subjectName = id => subjects[id]?.title || 'Toutes les matières';
+  function sidebar(route) {
+    const nav=[['home','Mon tableau de bord','home'],['subjects','Mes matières','book'],['cards','Flashcards','cards'],['timeline','Frises chronologiques','timeline'],['schemes','Schémas','scheme'],['references','Approfondir','feather'],['favorites','Mes favoris','star']];
+    const active = route[0]||'home';
+    document.getElementById('sidebar').innerHTML = `<a class="brand" href="#home" aria-label="L’Atelier du droit, accueil"><span class="brand-mark">${icon('balance','lg')}</span><span><strong>L’Atelier<br>du droit</strong><small>Apprendre & comprendre</small></span></a><div class="semester"><span>L1 Droit</span><small>Semestre 1</small></div><nav><div class="nav-label">Mon espace</div>${nav.map(([id,label,symbol])=>`<a class="nav-link ${active===id?'active':''}" href="#${id}" ${active===id?'aria-current="page"':''}>${icon(symbol)}${label}</a>`).join('')}<div class="nav-label">Mes matières</div>${D.subjects.map(s=>`<a class="nav-link ${s.color} ${active==='subject'&&route[1]===s.id?'active':''}" href="#subject/${s.id}"><span class="subject-dot"></span>${s.title}</a>`).join('')}<div class="nav-label">Ma bibliothèque</div><a class="nav-link ${active==='sources'||active==='document'?'active':''}" href="#sources">${icon('folder')}Cours & documents</a><a class="nav-link ${active==='settings'?'active':''}" href="#settings">${icon('settings')}Mon espace personnel</a></nav><div class="sidebar-end">${icon('lock')}<span>Un chapitre à la fois.<br>À ton rythme.</span></div>`;
+  }
+  function topbar(title, query='') {
+    document.getElementById('topbar').innerHTML=`<button class="mobile-menu" data-action="menu" aria-label="Ouvrir ou fermer la navigation" aria-expanded="${document.body.classList.contains('menu-open')}">${icon('menu')}</button><div class="crumb"><span>L1 Droit</span>${icon('chevron')}<strong>${esc(title)}</strong></div><div class="top-right"><form class="search-box" id="search-form" role="search"><label class="screen-reader-only" for="global-search">Rechercher dans les cours et fiches</label><input id="global-search" name="q" value="${esc(query)}" placeholder="Rechercher une notion…" autocomplete="off"><button type="submit" aria-label="Rechercher">${icon('search')}</button></form><span class="avatar" aria-label="Espace personnel">L1</span></div>`;
+  }
+  function subjectCard(s) {
+    const chapters=D.chapters.filter(c=>c.subject===s.id), count=done(s.id), percent=Math.round(count/chapters.length*100);
+    return `<a class="subject-card ${s.color}" href="#subject/${s.id}"><div class="subject-card-top"><span class="subject-visual">${icon(s.icon)}</span><span class="pill small">S1</span></div><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p><div class="subject-meta">${chapters.length} chapitres <span>·</span> Cours & fiche</div><div class="progress" aria-label="${percent} % des chapitres marqués révisés"><span style="width:${percent}%"></span></div><div class="subject-bottom"><span>${count} / ${chapters.length} révisés</span>${icon('arrow')}</div></a>`;
+  }
+  function home() {
+    const recent=D.chapters.find(c=>state.chapters[c.id]==='started') || D.chapters.find(c=>state.chapters[c.id]!=='done') || D.chapters[0];
+    return `${header('Mon semestre, à mon rythme.','Un espace pour retrouver tes cours, comprendre les notions et réviser un peu chaque jour.','BIENVENUE DANS TON ATELIER',`<span class="pill date-pill">${icon('book')}3 matières · S1</span>`)}<section class="hero"><div><span class="eyebrow">Le prochain petit pas</span><h2>${state.chapters[recent.id]==='started'?'Reprendre là où tu en étais.':'Un chapitre aujourd’hui,<br>une notion en plus.'}</h2><p>${esc(subjectName(recent.subject))} · ${esc(recent.title)}<br>Le cours et ta fiche sont réunis au même endroit.</p>${button('Ouvrir mon chapitre',`#chapter/${recent.id}/cours`,true)}</div><div class="hero-art" aria-hidden="true"><span class="floating-label one">Comprendre</span><div class="hero-orbit">${icon('balance')}</div><span class="floating-label two">Puis mémoriser</span></div></section><div class="stats"><div class="stat"><span class="stat-icon">${icon('book')}</span><div><strong>${D.chapters.length}</strong><small>chapitres disponibles</small></div></div><div class="stat"><span class="stat-icon">${icon('cards')}</span><div><strong>${dueCards().length}</strong><small>cartes à découvrir ou revoir</small></div></div><div class="stat"><span class="stat-icon">${icon('check')}</span><div><strong>${done()}<span class="muted" style="font-size:13px"> / ${D.chapters.length}</span></strong><small>chapitres marqués révisés</small></div></div></div><section><div class="section-heading"><h2>Mes matières</h2><a class="text-link" href="#sources">Voir mes documents ${icon('arrow')}</a></div><div class="cards-grid">${D.subjects.map(subjectCard).join('')}</div></section><div class="lower-grid"><section class="panel training-panel"><div class="deck-art" aria-hidden="true">${icon('cards')}</div><div><span class="eyebrow">Révision active</span><h2>Faire travailler ma mémoire.</h2><p>Une session de 10 cartes, à partir des définitions de tes fiches.</p>${button('Lancer une session','#cards/all',true)}</div></section><section class="panel"><span class="eyebrow">Changer de perspective</span><h2>Relier les idées.</h2><div class="tool-list"><a class="tool-row" href="#timeline"><span>${icon('timeline')}60 repères chronologiques</span>${icon('arrow')}</a><a class="tool-row" href="#schemes"><span>${icon('scheme')}3 schémas pour comprendre</span>${icon('arrow')}</a><a class="tool-row" href="#references"><span>${icon('feather')}Auteurs & approfondissements</span>${icon('arrow')}</a></div></section></div>`;
+  }
+  function chapterRow(c) {
+    const status=state.chapters[c.id], starred=state.favorites.includes(c.id);
+    return `<a class="chapter-row ${subjects[c.subject].color}" href="#chapter/${c.id}/cours"><span class="chapter-number">${status==='done'?icon('check'):String(c.number).padStart(2,'0')}</span><span class="chapter-title"><h3>${esc(c.title)} ${starred?`<span class="pinned-star">${icon('star')}</span>`:''}</h3><small>Cours · Fiche · ${c.minutes} min de lecture${c.partial?' · Contenu partiel':''}</small></span><span class="status ${status==='done'?'complete':''}"><span class="status-dot"></span>${status==='done'?'Révisé':status==='started'?'En cours':'À découvrir'}</span>${icon('chevron')}</a>`;
+  }
+  function subjectPage(id) {
+    const s=subjects[id];if(!s)return notFound();
+    const chapters=D.chapters.filter(c=>c.subject===id);
+    let last='';
+    return `${header(s.title,s.description,'MA MATIÈRE · SEMESTRE 1',button('Réviser les cartes',`#cards/${id}`,false,'cards'))}${tabs([['chapters','Mes chapitres',`#subject/${id}`],['timeline','Frise',`#timeline/${id}`],['references','Approfondir',`#references/${id}`],['sources','Documents',`#sources/${id}`]],'chapters')}${D.notices.filter(n=>n.subject===id).map(n=>notice(n.text)).join('')}<div class="section-heading"><h2>Le plan de ma matière</h2><span class="small muted">${done(id)} / ${chapters.length} révisés</span></div><div class="chapter-list">${chapters.map(c=>{const part=c.part!==last?`<h3 class="part-heading">${esc(c.part)}</h3>`:'';last=c.part;return part+chapterRow(c);}).join('')}</div>`;
+  }
+  function paragraph(p,highlight=false) {
+    let tag='p',cls='';
+    if(p.level!==null && p.level<3){tag=['h2','h3','h4'][p.level];cls='source-heading';}
+    else if(!p.style && p.text.length<200 && /^(CHAPITRE|Chapitre|PARTIE|Partie|INTRODUCTION|Introduction générale)/.test(p.text)){tag='h2';cls='source-heading';}
+    else if(!p.style && p.text.length<150 && /^(Section|SECTION|[IVX]+\s*[-:.]|[A-D]\s*[.-])/.test(p.text)){tag='h3';cls='source-heading';}
+    else if(/Definition/i.test(p.style))cls='definition';
+    else if(/Bullet|Compact List/.test(p.style))cls='source-bullet';
+    else if(/SmallNote/.test(p.style))cls='source-note';
+    else if(/Correction/.test(p.style))cls='source-correction';
+    return `<${tag} id="p-${p.index}" class="${cls} ${highlight?'spotlight':''}">${esc(p.text)}</${tag}>`;
+  }
+  function renderReader(doc,ps,label,highlight=null) {
+    const headings=ps.filter(p=>(p.level!==null&&p.level<2)||(!p.style&&p.text.length<150&&/^(CHAPITRE|Chapitre|PARTIE|Partie|Section|INTRODUCTION)/.test(p.text))).slice(0,22);
+    const kind=doc.kind==='cours'?'Cours fourni · notes originales':doc.kind==='fiche'?'Fiche de révision fournie':doc.kind==='officiel'?'Plan officiel conservé dans le projet':'Archive du projet';
+    return `<div class="reader-layout"><article class="reader"><div class="source-strip"><span>${icon('book')} ${kind}</span><a class="source-link" href="${doc.url}" download="${esc(doc.name)}">${icon('download')}Document original</a></div><div class="reader-body">${ps.map(p=>paragraph(p,p.index===highlight)).join('')}</div></article><aside class="reading-tools" aria-label="Sommaire de la lecture"><button class="btn" data-action="print">${icon('print')}Imprimer la lecture</button><h3>Dans cette lecture</h3>${headings.map(p=>`<a href="#p-${p.index}" data-scroll="p-${p.index}">${esc(p.text.slice(0,125))}</a>`).join('')}<p>La lecture reprend le texte du document. Pour les tableaux et illustrations dans leur mise en page, ouvre l’original.</p></aside></div>`;
+  }
+  function chapterPage(id,tab='cours') {
+    const c=chapterById[id];if(!c)return notFound();
+    if(!['cours','fiche','cartes','notes','plus'].includes(tab))tab='cours';
+    const star=state.favorites.includes(id),status=state.chapters[id];
+    const actions=`<button class="btn ${star?'pinned-star':''}" data-action="favorite" data-id="${id}" aria-pressed="${star}">${icon('star')}${star?'En favoris':'Favori'}</button><button class="btn ${status==='done'?'':'primary'}" data-action="complete" data-id="${id}" aria-pressed="${status==='done'}">${icon('check')}${status==='done'?'Marqué révisé':'Marquer révisé'}</button>`;
+    const intro=`<a class="text-link back" href="#subject/${c.subject}">${icon('back')}${esc(subjectName(c.subject))}</a>${header(c.title,c.part,`CHAPITRE ${String(c.number).padStart(2,'0')} · ${subjectName(c.subject).toUpperCase()}`,actions)}${tabs([['cours','Cours',`#chapter/${id}/cours`],['fiche','Fiche',`#chapter/${id}/fiche`],['cartes','Flashcards',`#chapter/${id}/cartes`],['plus','Approfondir',`#chapter/${id}/plus`],['notes','Mes notes',`#chapter/${id}/notes`]],tab)}`;
+    if(tab==='notes')return intro+`<label class="screen-reader-only" for="chapter-note">Mes notes sur ${esc(c.title)}</label><textarea class="note-editor" id="chapter-note" data-chapter="${id}" maxlength="100000" placeholder="Ce que j’ai compris, mes exemples, les questions à poser…">${esc(state.notes[id]||'')}</textarea><p class="note-status" id="note-status">${storageAvailable?'Enregistrement automatique sur cet appareil.':'Stockage indisponible. Exporte tes notes avant de fermer.'}</p><p class="small muted">Ces notes sont tes ajouts personnels. Elles restent séparées du cours et de la fiche.</p>`;
+    if(tab==='cartes'){
+      const cards=D.cards.filter(card=>card.chapter===id);
+      return intro+(cards.length?`<p class="lead">${cards.length} définitions de ta fiche sont liées à ce chapitre. Tu peux les consulter ou les travailler dans une session.</p>${button('Réviser ces cartes',`#cards/chapter/${id}`,true,'cards')}<div class="reference-grid spaced">${cards.map(card=>`<article class="reference-card"><span class="eyebrow">Définition · Fiche fournie</span><h3>${esc(card.term)}</h3><p>${esc(card.answer)}</p>${sourceLink(card.source)}</article>`).join('')}</div>`:empty('Pas encore de cartes pour ce chapitre.','Le premier lot reprend les définitions des glossaires fournis. De nouvelles cartes pourront être ajoutées lorsque tu me les demanderas.',button('Réviser cette matière',`#cards/${c.subject}`,true,'cards')));
+    }
+    if(tab==='plus'){
+      const additions=D.enrichments.filter(e=>e.chapter===id);
+      return intro+`<p class="lead">Compléments déjà présents dans ta fiche, identifiés séparément des notes de cours.</p>${additions.length?`<div class="reference-grid">${additions.map(e=>`<article class="reference-card"><span class="eyebrow">Complément de la fiche fournie</span><p>${esc(e.text)}</p>${sourceLink(e.source)}</article>`).join('')}</div>`:empty('Explorer les liens entre les notions.','Retrouve les auteurs, les compléments de la fiche et les ressources de la matière.',button('Approfondir cette matière',`#references/${c.subject}`,true,'feather'))}`;
+    }
+    const range=tab==='cours'?c.course:c.fiche,doc=docs[range.doc],ps=doc.paragraphs.slice(range.start,range.end);
+    const courseNote=tab==='cours'?notice('Notes de cours conservées telles que fournies. Les corrections et nuances présentes dans ta fiche ne sont pas appliquées silencieusement aux notes originales.'):'';
+    const partial=c.partial?notice('Le document s’arrête au début des immunités diplomatiques. La suite du programme n’est pas encore fournie.'):'';
+    const chapters=D.chapters.filter(x=>x.subject===c.subject),position=chapters.indexOf(c);
+    const nav=`<div class="reader-nav">${position?button('Chapitre précédent',`#chapter/${chapters[position-1].id}/${tab}`,false,'back'):'<span></span>'}${position<chapters.length-1?button('Chapitre suivant',`#chapter/${chapters[position+1].id}/${tab}`):button('Retour à la matière',`#subject/${c.subject}`)}</div>`;
+    return intro+courseNote+partial+renderReader(doc,ps,tab)+nav;
+  }
+  function documentPage(id,index) {
+    const doc=docs[id];if(!doc)return notFound();
+    const p=Number(index),highlight=index!==undefined&&Number.isInteger(p)&&p>=0&&p<doc.paragraphs.length?p:null;
+    return `<a class="text-link back" href="#sources/${doc.subject}">${icon('back')}Cours & documents</a>${header(doc.kind==='cours'?`Cours de ${subjectName(doc.subject).toLowerCase()}`:doc.kind==='fiche'?`Fiche · ${subjectName(doc.subject)}`:doc.kind==='officiel'?'Plan officiel des institutions internationales':'Archive nommée Syllabus',doc.name,'DOCUMENT FOURNI · TEXTE INTÉGRAL')}${doc.note?notice(doc.note):''}${notice('Les tableaux sont présentés ici dans leur ordre de lecture. Les illustrations et la mise en page d’origine sont disponibles dans le document à télécharger.')}${renderReader(doc,doc.paragraphs,'Document',highlight)}`;
+  }
+  function sourcesPage(selected='all') {
+    if(!subjects[selected])selected='all';
+    const list=D.documents.filter(d=>(selected==='all'||d.subject===selected)&&['cours','fiche'].includes(d.kind));
+    return `${header('Ma bibliothèque de cours.','Les documents que tu as transmis, les ressources du projet et leur provenance.','COURS & DOCUMENTS')}${filters('sources',selected)}<div class="reference-grid">${list.map(d=>`<article class="reference-card ${subjects[d.subject].color}"><span class="eyebrow">${esc(subjectName(d.subject))} · ${d.kind==='cours'?'Cours fourni':'Fiche fournie'}</span><h3>${d.kind==='cours'?'Mes notes de cours':'Ma fiche de révision'}</h3><p class="file-name">${esc(d.name)}</p><p>${d.paragraphs.length} paragraphes accessibles en lecture.<br>Document original conservé à l’identique.</p><div class="page-actions">${button('Lire',`#document/${d.id}`,true,'book')}<a class="btn" href="${d.url}" download="${esc(d.name)}">${icon('download')}Original</a></div></article>`).join('')}</div>${selected==='all'||selected==='international'?`<section class="spaced"><h2>Références du cours d’institutions internationales</h2><p class="lead">Plan officiel conservé dans le projet et leçons UNJF. Ces ressources restent distinctes de tes notes.</p>${D.notices.map(n=>notice(n.text)).join('')}<div class="resource-row"><div><h3>Plan du cours · L1 groupe 3 · 2026</h3><p>Contenu officiel conservé dans le projet. Moodle reste la référence actuelle.</p></div>${button('Consulter','#document/international-plan',false,'book')}</div><div class="resources-list spaced">${D.resources.map(r=>`<article class="resource-row"><div><h3>${esc(r.name.replace(/^UNJF \d+\. /,''))}</h3><p>UNJF · ${r.pages} pages · Ressource complémentaire du projet</p></div><a class="btn" href="${r.url}" target="_blank" rel="noopener">Ouvrir le PDF ${icon('external')}</a></article>`).join('')}</div><p class="count-caption">Seules les ressources accessibles dans ce projet ont été ajoutées. L’ensemble de ta bibliothèque ChatGPT n’a pas été parcouru.</p></section>`:''}`;
+  }
+  function cardStart(subject='all',chapter=null) {
+    const filtered=D.cards.filter(c=>chapter?c.chapter===chapter:(subject==='all'||c.subject===subject));
+    const available=filtered.filter(c=>!state.reviews[c.id]||state.reviews[c.id].due<=Date.now());
+    const title=chapter?chapterById[chapter]?.title:subjectName(subject);
+    const startId=chapter?`chapter:${chapter}`:subject;
+    return `${header('Retrouver, sans relire.','Teste ta mémoire sur les définitions de tes fiches. Retourne chaque carte, puis indique si tu l’as retenue.','FLASHCARDS')}${!chapter?filters('cards',subject):`<a class="text-link back" href="#chapter/${chapter}/cartes">${icon('back')}Retour au chapitre</a>`}<section class="panel"><span class="eyebrow">${esc(title)}</span><h2>${available.length?'Une courte session pour avancer.':'Les cartes de ce lot ont été revues.'}</h2><p>${filtered.length} cartes dans ce lot · ${available.length} nouvelles ou à revoir aujourd’hui.</p><div class="page-actions"><button class="btn primary" data-action="start-session" data-target="${startId}" data-mode="due" ${!available.length?'disabled':''}>${icon('cards')}Commencer ${Math.min(10,available.length)} cartes</button><button class="btn" data-action="start-session" data-target="${startId}" data-mode="all" ${!filtered.length?'disabled':''}>Réviser aussi les cartes déjà vues ${icon('refresh')}</button></div><p class="small spaced">Les réponses sont transcrites depuis tes fiches. « À revoir » programme un rappel dans 1 jour ; « Bien retenu » dans 3 jours. Le suivi est enregistré sur cet appareil.</p></section>${!chapter&&subject==='all'?`<div class="deck-summary">${D.subjects.map(s=>`<section class="deck-card ${s.color}"><span class="subject-visual">${icon(s.icon)}</span><h3 class="spaced">${esc(s.title)}</h3><p>${D.cards.filter(c=>c.subject===s.id).length} cartes · ${dueCards(s.id).length} à découvrir ou revoir</p>${button('Ouvrir le lot',`#cards/${s.id}`,false,'cards')}</section>`).join('')}</div>`:''}`;
+  }
+  function sessionPage() {
+    if(!session)return cardStart();
+    if(session.index>=session.cards.length)return `${header('Une session de plus.','Tu viens de travailler tes définitions. Les prochaines dates de révision sont enregistrées.','FLASHCARDS')}<div class="empty-state">${icon('check')}<h2>${session.cards.length} cartes travaillées.</h2><p>${session.known} bien retenues · ${session.cards.length-session.known} à revoir demain.</p><div class="page-actions" style="justify-content:center"><button class="btn" data-action="end-session">Retour aux lots ${icon('back')}</button>${button('Continuer ma lecture','#subjects',true,'book')}</div></div>`;
+    const card=session.cards[session.index];
+    return `${header('Un instant pour mémoriser.','Réponds à voix haute ou dans ta tête avant de retourner la carte.','FLASHCARDS')}<div class="flash-workspace"><button class="btn ghost" data-action="end-session">${icon('back')}Quitter la session</button><div class="flash-meta"><span>${esc(subjectName(card.subject))}</span><span>Carte ${session.index+1} / ${session.cards.length}</span></div><div class="progress"><span style="width:${session.index/session.cards.length*100}%"></span></div><button class="flashcard spaced ${subjects[card.subject].color}" data-action="flip" aria-label="${session.flipped?'Afficher la question':'Afficher la réponse'}"><span class="eyebrow">${session.flipped?'La réponse · Fiche fournie':'La question · Définition'}</span>${session.flipped?`<span class="answer">${esc(card.answer)}</span>`:`<span class="question">${esc(card.question)}</span>`}<small>${icon('refresh')}Cliquer pour ${session.flipped?'revoir la question':'retourner la carte'}</small></button>${session.flipped?`<div class="review-actions"><button class="btn again" data-action="grade" data-grade="again">${icon('refresh')}À revoir</button><button class="btn known" data-action="grade" data-grade="known">${icon('check')}Bien retenu</button></div><div class="flash-source">${sourceLink(card.source)}</div>`:`<div class="review-actions"><button class="btn primary" data-action="flip">Afficher la réponse ${icon('arrow')}</button></div>`}</div>`;
+  }
+  function timelinePage(selected='all') {
+    if(!subjects[selected])selected='all';
+    const items=D.timelines.filter(t=>selected==='all'||t.subject===selected).sort((a,b)=>a.year-b.year||a.date.localeCompare(b.date));
+    return `${header('Situer les notions dans le temps.','Les repères historiques et les décisions recensés dans tes fiches, avec un accès au passage source.','FRISES CHRONOLOGIQUES')}${filters('timeline',selected)}<p class="count-caption">${items.length} repères · Reprise des fiches fournies</p><div class="timeline">${items.map(t=>`<article class="timeline-item ${subjects[t.subject].color}"><div class="timeline-date">${esc(t.date)}</div><span class="timeline-dot" aria-hidden="true"></span><div class="timeline-content"><span class="pill">${esc(subjectName(t.subject))}</span><p>${esc(t.text)}</p>${sourceLink(t.source)}</div></article>`).join('')}</div>`;
+  }
+  function schemesPage(selected='all') {
+    if(!subjects[selected])selected='all';
+    return `${header('Voir les liens entre les idées.','Trois premiers schémas pour organiser ce que tu apprends. Chaque schéma renvoie à ta fiche.','SCHÉMAS DE RÉVISION')}${filters('schemes',selected)}${D.schemes.filter(s=>selected==='all'||s.subject===selected).map(s=>`<article class="scheme ${subjects[s.subject].color}"><span class="eyebrow">${esc(subjectName(s.subject))} · Support ajouté</span><h2>${esc(s.title)}</h2><div class="center-node">${esc(s.center)}</div><div class="scheme-line"></div><div class="scheme-nodes">${s.nodes.map(n=>`<div class="scheme-node"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p></div>`).join('')}</div><div class="scheme-caption"><span>${esc(s.caption)}</span>${sourceLink(s.source)}</div></article>`).join('')}`;
+  }
+  function referencesPage(selected='all',tab='authors') {
+    if(!subjects[selected])selected='all';
+    const items=tab==='additions'?D.enrichments.filter(e=>selected==='all'||e.subject===selected):D.authors.filter(a=>selected==='all'||a.subject===selected);
+    return `${header('Comprendre un peu plus loin.','Les auteurs et les approfondissements déjà présents dans tes fiches. Ils restent distincts du contenu officiel du professeur.','AUTEURS & COMPLÉMENTS')}${filters('references',selected)}${tabs([['authors','Les auteurs',`#references/${selected}/authors`],['additions','Approfondissements',`#references/${selected}/additions`],['resources','Ressources',`#sources/${selected}`]],tab)}<div class="reference-grid">${items.map(item=>`<article class="reference-card ${subjects[item.subject].color}"><span class="eyebrow">${esc(subjectName(item.subject))} · Fiche fournie</span>${item.name?`<h3>${esc(item.name)}</h3>`:''}<p>${esc(item.text)}</p>${sourceLink(item.source)}</article>`).join('')}</div><p class="count-caption">De nouvelles recherches sur un auteur, un article ou une décision pourront être ajoutées ici à ta demande. Ce premier contenu est repris des fiches transmises.</p>`;
+  }
+  function favoritesPage() {
+    const favorites=D.chapters.filter(c=>state.favorites.includes(c.id));
+    return `${header('Garder mes repères à portée de main.','Les chapitres que tu as ajoutés à tes favoris.','MES FAVORIS')}${favorites.length?`<div class="chapter-list">${favorites.map(chapterRow).join('')}</div>`:empty('Ta sélection commence ici.','Clique sur « Favori » dans un chapitre pour le retrouver dans cet espace.',button('Explorer mes matières','#subjects',true,'book'))}`;
+  }
+  function searchPage(query) {
+    const term=normalize(query).trim();
+    if(!term)return header('Chercher une notion.','Entre un mot dans la barre de recherche pour retrouver les passages des cours et fiches.','RECHERCHE');
+    let total=0;const results=[];
+    for(const d of D.documents.filter(d=>['cours','fiche','officiel'].includes(d.kind))){for(const p of d.paragraphs){if(normalize(p.text).includes(term)){total++;if(results.length<100)results.push({d,p});}}}
+    function excerpt(text){const start=normalize(text).indexOf(term),left=Math.max(0,start-100),right=Math.min(text.length,start+term.length+230);let clip=text.slice(left,right);const pos=normalize(clip).indexOf(term);return (left?'… ':'')+esc(clip.slice(0,pos))+'<mark>'+esc(clip.slice(pos,pos+term.length))+'</mark>'+esc(clip.slice(pos+term.length))+(right<text.length?' …':'');}
+    return `${header(`Résultats pour « ${query} »`,`${total} passage${total>1?'s':''} trouvé${total>1?'s':''} dans les documents. ${total>100?'Les 100 premiers sont affichés ; précise ta recherche pour affiner.':''}`,'RECHERCHE DANS MES DOCUMENTS')}<div class="search-results">${results.map(({d,p})=>`<a class="result" href="#document/${d.id}/${p.index}"><span class="eyebrow">${esc(subjectName(d.subject))} · ${d.kind==='cours'?'Cours fourni':d.kind==='fiche'?'Fiche fournie':'Plan officiel'}</span><p>${excerpt(p.text)}</p><span class="text-link">Ouvrir le passage ${icon('arrow')}</span></a>`).join('')}</div>${!results.length?empty('Aucun passage trouvé.','Essaie un mot plus court, un synonyme ou le nom d’un auteur.'):''}`;
+  }
+  function settingsPage() {
+    const noteCount=Object.values(state.notes).filter(n=>n.trim()).length;
+    return `${header('Un espace qui suit mon travail.','Tes notes, favoris et révisions sont enregistrés dans ce navigateur. Tu peux exporter une sauvegarde pour les conserver ou les transférer.','MON ESPACE PERSONNEL')}${!storageAvailable?notice('Le stockage du navigateur est indisponible. Exporte tes données avant de fermer cette page.'):''}<section class="panel"><div class="settings-row"><div><h3>Ma progression</h3><p>${done()} chapitres révisés · ${state.favorites.length} favoris · ${noteCount} chapitres avec des notes</p></div><span class="pill">Cet appareil</span></div><div class="settings-row"><div><h3>Conserver ou transférer mes données</h3><p>La sauvegarde contient tes notes et ton suivi. Les cours sont conservés dans le site.</p></div><div class="page-actions"><button class="btn primary" data-action="export">${icon('download')}Exporter</button><button class="btn" data-action="restore">${icon('upload')}Restaurer</button></div></div><div class="settings-row"><div><h3>Ajouter de nouveaux cours et supports</h3><p>Envoie-les dans notre conversation. Je pourrai les intégrer à la matière et au chapitre concernés.</p></div></div></section><section class="panel spaced"><h2>Comprendre la provenance</h2><p><strong>Cours fourni</strong> : tes notes originales, conservées sans correction silencieuse.</p><p><strong>Fiche fournie</strong> : ton document de révision, avec ses propres corrections et compléments.</p><p><strong>Contenu officiel</strong> : le plan du professeur conservé dans le projet. Moodle reste la référence actuelle.</p><p><strong>Support ajouté</strong> : schéma préparé à partir de la fiche. Les cartes et frises reprennent les passages identifiés de tes fiches.</p><p>Contenu intégré le 13 octobre 2026. Le cours d’institutions internationales et le syllabus présentent les limites indiquées dans la bibliothèque.</p>${button('Consulter mes documents','#sources',false,'folder')}</section>`;
+  }
+  function notFound(){return empty('Cet espace est introuvable.','Retourne au tableau de bord pour retrouver tes matières.',button('Mon tableau de bord','#home',true));}
+  function getRoute(){try{return (location.hash.slice(1)||'home').split('/').map(decodeURIComponent);}catch{return ['home'];}}
+  function render(resetScroll=true) {
+    const route=getRoute();
+    const labels={home:'Tableau de bord',subjects:'Mes matières',subject:subjectName(route[1]),chapter:subjectName(chapterById[route[1]]?.subject),document:'Bibliothèque',sources:'Bibliothèque',cards:'Flashcards',timeline:'Frises',schemes:'Schémas',references:'Approfondir',favorites:'Favoris',settings:'Mon espace',search:'Recherche'};
+    sidebar(route);topbar(labels[route[0]]||'Mon espace',route[0]==='search'?route[1]||'':'');
+    let html;
+    switch(route[0]){
+      case 'home':html=home();break;
+      case 'subjects':html=header('Un semestre, trois matières.','Retrouve le plan de chaque matière et avance chapitre par chapitre.','MES MATIÈRES')+`<div class="cards-grid">${D.subjects.map(subjectCard).join('')}</div>`;break;
+      case 'subject':html=subjectPage(route[1]);break;
+      case 'chapter':html=chapterPage(route[1],route[2]);break;
+      case 'document':html=documentPage(route[1],route[2]);break;
+      case 'sources':html=sourcesPage(route[1]);break;
+      case 'cards':html=session?sessionPage():route[1]==='chapter'?cardStart(chapterById[route[2]]?.subject,route[2]):cardStart(subjects[route[1]]?route[1]:'all');break;
+      case 'timeline':html=timelinePage(route[1]);break;
+      case 'schemes':html=schemesPage(route[1]);break;
+      case 'references':html=referencesPage(route[1],route[2]==='additions'?'additions':'authors');break;
+      case 'favorites':html=favoritesPage();break;
+      case 'settings':html=settingsPage();break;
+      case 'search':html=searchPage(route[1]||'');break;
+      default:html=notFound();
+    }
+    main.innerHTML=html;
+    document.title=`${labels[route[0]]||'Mon espace'} · L’Atelier du droit`;
+    if(resetScroll)window.scrollTo({top:0,behavior:'instant'});
+    if(route[0]==='chapter'&&['cours','fiche',undefined].includes(route[2])&&chapterById[route[1]]&&!state.chapters[route[1]]){state.chapters[route[1]]='started';persist();}
+    if(route[0]==='document'&&route[2]!==undefined){requestAnimationFrame(()=>document.getElementById(`p-${Number(route[2])}`)?.scrollIntoView({block:'center'}));}
+  }
+  document.addEventListener('click',event=>{
+    const scrollLink=event.target.closest('[data-scroll]');if(scrollLink){event.preventDefault();document.getElementById(scrollLink.dataset.scroll)?.scrollIntoView({behavior:'smooth',block:'start'});return;}
+    const target=event.target.closest('[data-action]');
+    if(!target){if(event.target.closest('a[href^="#"]')&&!event.target.closest('#sidebar'))document.body.classList.remove('menu-open');return;}
+    const id=target.dataset.id;
+    switch(target.dataset.action){
+      case 'menu':document.body.classList.toggle('menu-open');target.setAttribute('aria-expanded',String(document.body.classList.contains('menu-open')));break;
+      case 'favorite':if(!chapterById[id])return;state.favorites=state.favorites.includes(id)?state.favorites.filter(x=>x!==id):[...state.favorites,id];persist();render(false);showToast(state.favorites.includes(id)?'Chapitre ajouté aux favoris.':'Chapitre retiré des favoris.');break;
+      case 'complete':if(!chapterById[id])return;state.chapters[id]=state.chapters[id]==='done'?'started':'done';persist();render(false);showToast(state.chapters[id]==='done'?'Chapitre marqué révisé.':'Chapitre marqué en cours.');break;
+      case 'print':window.print();break;
+      case 'start-session':{
+        const targetId=target.dataset.target,chapter=targetId.startsWith('chapter:')?targetId.slice(8):null;
+        let cards=D.cards.filter(c=>chapter?c.chapter===chapter:(targetId==='all'||c.subject===targetId));
+        if(target.dataset.mode==='due')cards=cards.filter(c=>!state.reviews[c.id]||state.reviews[c.id].due<=Date.now());
+        cards=cards.slice(0,10);if(!cards.length)return;
+        session={cards,index:0,flipped:false,known:0,returnRoute:location.hash};render();break;
+      }
+      case 'flip':if(session&&session.index<session.cards.length){session.flipped=!session.flipped;render(false);}break;
+      case 'grade':if(session&&session.flipped&&session.index<session.cards.length){const card=session.cards[session.index],grade=target.dataset.grade==='known'?'known':'again';state.reviews[card.id]={due:Date.now()+(grade==='known'?3:1)*86400000,seen:(state.reviews[card.id]?.seen||0)+1,grade};if(grade==='known')session.known++;session.index++;session.flipped=false;persist();render(false);}break;
+      case 'end-session':{const route=session?.returnRoute||'#cards';session=null;if(location.hash===route)render();else location.hash=route;break;}
+      case 'export':{const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`atelier-droit-progression-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);showToast('Sauvegarde téléchargée.');break;}
+      case 'restore':document.getElementById('restore-file').click();break;
+    }
+  });
+  document.addEventListener('submit',event=>{if(event.target.id==='search-form'){event.preventDefault();const query=event.target.elements.q.value.trim().slice(0,180);location.hash=`search/${encodeURIComponent(query)}`;}});
+  document.addEventListener('input',event=>{if(event.target.id==='chapter-note'){const id=event.target.dataset.chapter;state.notes[id]=event.target.value;const success=persist();document.getElementById('note-status').textContent=success?'Notes enregistrées sur cet appareil.':'Enregistrement indisponible. Exporte tes notes avant de fermer.';}});
+  document.getElementById('restore-file').addEventListener('change',async event=>{
+    const file=event.target.files?.[0];if(!file)return;
+    try{
+      if(file.size>2_000_000)throw new Error('Ce fichier dépasse la taille maximale de 2 Mo.');
+      const imported=cleanState(JSON.parse(await file.text()));
+      // Merge and preserve existing notes when the import has a different text.
+      for(const [id,text] of Object.entries(imported.notes)){const current=state.notes[id]||'';state.notes[id]=current&&current!==text?`${current}\n\n—— Notes de la sauvegarde importée ——\n${text}`:text;}
+      for(const [id,status] of Object.entries(imported.chapters))if(state.chapters[id]!=='done')state.chapters[id]=status;
+      state.favorites=[...new Set([...state.favorites,...imported.favorites])];
+      for(const [id,review] of Object.entries(imported.reviews))if(!state.reviews[id]||review.seen>state.reviews[id].seen)state.reviews[id]=review;
+      persist();session=null;render(false);showToast('Sauvegarde ajoutée à ta progression.');
+    }catch(error){showToast(error.message||'Impossible de lire cette sauvegarde.');}
+    event.target.value='';
+  });
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'){document.body.classList.remove('menu-open');document.querySelector('.mobile-menu')?.setAttribute('aria-expanded','false');}});
+  window.addEventListener('hashchange',()=>{document.body.classList.remove('menu-open');render();});
+  render();
+})();
