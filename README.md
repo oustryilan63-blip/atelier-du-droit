@@ -2,7 +2,7 @@
 
 Espace personnel de révision du semestre 1 de L1 Droit, publié sur GitHub Pages.
 
-Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 33 chapitres. Il propose 176 flashcards, 33 questions de quiz avec correction, 104 repères chronologiques, douze schémas de révision, treize fiches de lecture d’articles officiels et dix-neuf entrées consacrées aux auteurs et juristes.
+Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 33 chapitres. Il propose 188 flashcards, 66 questions de quiz avec correction, 104 repères chronologiques, seize schémas de révision, treize fiches de lecture d’articles officiels et dix-neuf entrées consacrées aux auteurs et juristes. Douze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories.
 
 [Ouvrir le site](https://oustryilan63-blip.github.io/atelier-du-droit/)
 
@@ -14,7 +14,9 @@ Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js
 
 - Les cours sont les notes transmises par l’étudiante. Elles sont conservées sans correction silencieuse.
 - Les trois premières fiches sont les documents de révision transmis, avec leurs propres corrections et compléments. La fiche d’histoire du droit a été préparée à partir du cours actuel, jusqu’au CM5, en reprenant la présentation de la fiche d’institutions internationales.
-- Les définitions et chronologies sont issues des fiches. Soixante-six cartes de compréhension et trente-trois questions de quiz ont été ajoutées, avec leurs corrections et leur passage source. Chaque chapitre possède au moins deux cartes de compréhension et une question de quiz.
+- Les définitions et chronologies sont issues des fiches. Soixante-six cartes de compréhension, douze cartes d’application et soixante-six questions de quiz sont ajoutées, avec leurs corrections et leur source. Chaque chapitre possède au moins deux cartes de compréhension et deux questions de quiz.
+- Les mini-fiches et cas sont des supports ajoutés, avec leurs sources et un accès à la fiche du chapitre. Les textes actuels sont vérifiés sur Légifrance, le Conseil constitutionnel, Vie publique, le ministère de la Justice et les Nations Unies. Les compléments d’histoire utilisent uniquement la fiche du cours actuel jusqu’au CM5. Les cas sont des exercices proposés, sans préjuger du format officiel du partiel.
+- Les 45 références bibliographiques sont reprises du PDF du cours ID 309, groupe 3, année 2026, avec leurs notices de catalogue. Le contenu des ouvrages n’est pas reproduit. Les cinq catégories et les différentes éditions sont conservées ; certaines notices peuvent demander une connexion universitaire.
 - L’histoire du droit couvre Rome, l’époque franque et les sources médiévales jusqu’au renouveau de la législation royale. La suite du semestre reste à transmettre. L’archive de l’année précédente est consultable séparément ; elle n’entre ni dans la fiche actuelle, ni dans les exercices, ni dans les résultats de recherche. Le fichier Word original téléchargeable contient le cours actuel et son archive, sans modification.
 - Les schémas sont des supports de révision ajoutés à partir des fiches.
 - Les fiches de lecture d’articles sont des compléments ajoutés, avec des liens vers Légifrance, le Conseil constitutionnel et les Nations Unies. Elles restent distinctes des consignes du professeur.
