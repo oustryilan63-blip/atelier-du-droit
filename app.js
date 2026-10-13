@@ -11,6 +11,11 @@
   let session = null;
   let quizSession = null;
   let toastTimer;
+  let highlightSelection = null;
+  let highlightSequence = 0;
+  let renderedRoute = '';
+  const highlightScopes = '.reader-body, .reference-card, .timeline-content, .scheme, .flashcard, .quiz-question';
+  const highlightExcluded = 'a, button:not(.flashcard), input, textarea, select, svg, .eyebrow, .page-actions, .source-strip, .flashcard small';
   const esc = value => String(value ?? '').replace(/[&<>"']/g, x => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[x]));
   const normalize = value => String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   const icons = {
@@ -42,6 +47,79 @@
     refresh:'<path d="M20 7v5h-5M4 17v-5h5m11 0a8 8 0 0 0-14-6m-2 6a8 8 0 0 0 14 6"/>',
   };
   const icon = (name, cls = '') => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true">${icons[name] || icons.book}</svg>`;
+  function highlightScope(node) {
+    const el=node?.nodeType===Node.ELEMENT_NODE?node:node?.parentElement;
+    if(!el||el.closest(highlightExcluded))return null;
+    const scope=el.closest(highlightScopes);
+    return scope&&main.contains(scope)?scope:null;
+  }
+  function updateHighlightControls() {
+    const apply=main.querySelector('[data-action="highlight-selection"]');
+    if(!apply)return;
+    const count=new Set([...main.querySelectorAll('mark.study-highlight')].map(m=>m.dataset.highlight)).size;
+    apply.disabled=!highlightSelection;
+    main.querySelector('[data-action="clear-highlights"]').disabled=!count;
+    const label=count?`${count} passage${count>1?'s':''} surligné${count>1?'s':''}`:'Aucun passage surligné';
+    const status=main.querySelector('#highlight-status');
+    if(status.textContent!==label)status.textContent=label;
+  }
+  function captureHighlightSelection() {
+    if(!main.querySelector('.study-highlighter'))return;
+    const selection=window.getSelection();
+    if(!selection?.rangeCount||selection.isCollapsed){
+      if(document.activeElement?.closest('.study-highlighter'))return;
+      highlightSelection=null;updateHighlightControls();return;
+    }
+    const range=selection.getRangeAt(0),scope=highlightScope(range.startContainer);
+    highlightSelection=scope&&scope===highlightScope(range.endContainer)&&range.toString().trim()?{range:range.cloneRange(),scope}:null;
+    updateHighlightControls();
+  }
+  function textOffset(scope,node,offset) {
+    const prefix=document.createRange();prefix.selectNodeContents(scope);prefix.setEnd(node,offset);
+    return prefix.toString().length;
+  }
+  function highlightText(scope,start,end,id) {
+    const walker=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT),pieces=[];
+    let node,position=0;
+    while((node=walker.nextNode())){
+      const length=node.data.length,left=Math.max(0,start-position),right=Math.min(length,end-position);
+      if(left<right&&node.data.slice(left,right).trim()&&!node.parentElement.closest(highlightExcluded+', mark.study-highlight'))pieces.push({node,left,right});
+      position+=length;
+    }
+    // Split text nodes only, retaining paragraphs, headings and source links.
+    for(const {node,left,right} of pieces.reverse()){
+      node.splitText(right);const selected=node.splitText(left),mark=document.createElement('mark');
+      mark.className='study-highlight';mark.dataset.highlight=id;selected.replaceWith(mark);mark.appendChild(selected);
+    }
+    return pieces.length;
+  }
+  function applyHighlight() {
+    if(!highlightSelection)return;
+    const {range,scope}=highlightSelection;
+    if(!scope.isConnected||!scope.contains(range.startContainer)||!scope.contains(range.endContainer)){highlightSelection=null;updateHighlightControls();return;}
+    const start=textOffset(scope,range.startContainer,range.startOffset),end=textOffset(scope,range.endContainer,range.endOffset);
+    highlightText(scope,start,end,String(++highlightSequence));
+    highlightSelection=null;window.getSelection()?.removeAllRanges();updateHighlightControls();
+  }
+  function clearHighlights() {
+    highlightSelection=null;
+    const parents=new Set();
+    for(const mark of main.querySelectorAll('mark.study-highlight')){parents.add(mark.parentElement);mark.replaceWith(...mark.childNodes);}
+    for(const parent of parents)parent.normalize();
+    updateHighlightControls();
+  }
+  function snapshotHighlights() {
+    return [...main.querySelectorAll(highlightScopes)].map((scope,index)=>({index,text:scope.textContent,marks:[...scope.querySelectorAll('mark.study-highlight')].filter(mark=>mark.closest(highlightScopes)===scope).map(mark=>({id:mark.dataset.highlight,start:textOffset(scope,mark.parentNode,[...mark.parentNode.childNodes].indexOf(mark)),length:mark.textContent.length}))})).filter(s=>s.marks.length);
+  }
+  function setupHighlighter(saved=[]) {
+    highlightSelection=null;
+    const scopes=[...main.querySelectorAll(highlightScopes)];if(!scopes.length)return;
+    const bar=document.createElement('section');bar.className='study-highlighter';bar.setAttribute('aria-label','Surlignage temporaire');
+    bar.innerHTML=`<div class="highlighter-intro"><strong>Surlignage temporaire</strong><small>Sélectionne un passage, puis surligne-le. Les couleurs s’effacent quand tu quittes la lecture.</small></div><div class="highlighter-actions"><button class="btn highlight-button" data-action="highlight-selection" disabled><span class="highlight-swatch" aria-hidden="true"></span>Surligner la sélection</button><button class="btn" data-action="clear-highlights" disabled>Tout effacer</button><span id="highlight-status" role="status" aria-live="polite">Aucun passage surligné</span></div>`;
+    main.querySelector('.page-head').after(bar);
+    for(const snapshot of saved){const scope=scopes[snapshot.index];if(scope?.textContent===snapshot.text)for(const mark of snapshot.marks)highlightText(scope,mark.start,mark.start+mark.length,mark.id);}
+    updateHighlightControls();
+  }
   function cleanState(input) {
     if (!input || input.version !== 1 || typeof input !== 'object') throw new Error('Format de sauvegarde non reconnu.');
     const next = {version:1,chapters:{},notes:{},favorites:[],reviews:{},quizzes:{},lastChapter:chapterById[input.lastChapter]?input.lastChapter:null};
@@ -237,6 +315,7 @@
   function getRoute(){try{return (location.hash.slice(1)||'home').split('/').map(decodeURIComponent);}catch{return ['home'];}}
   function render(resetScroll=true) {
     const route=getRoute();
+    const routeKey=location.hash||'#home',highlights=!resetScroll&&renderedRoute===routeKey?snapshotHighlights():[];
     const labels={home:'Tableau de bord',subjects:'Mes matières',subject:subjectName(route[1]),chapter:subjectName(chapterById[route[1]]?.subject),document:'Bibliothèque',sources:'Bibliothèque',cards:'Flashcards',quiz:'Quiz corrigés',timeline:'Frises',schemes:'Schémas',references:'Approfondir',favorites:'Favoris',settings:'Mon espace',search:'Recherche'};
     sidebar(route);topbar(labels[route[0]]||'Mon espace',route[0]==='search'?route[1]||'':'');
     let html;
@@ -258,6 +337,7 @@
       default:html=notFound();
     }
     main.innerHTML=html;
+    setupHighlighter(highlights);renderedRoute=routeKey;
     document.title=`${labels[route[0]]||'Mon espace'} · L’Atelier du droit`;
     if(resetScroll)window.scrollTo({top:0,behavior:'instant'});
     if(route[0]==='chapter'&&chapterById[route[1]]){let changed=state.lastChapter!==route[1];state.lastChapter=route[1];if(['cours','fiche',undefined].includes(route[2])&&!state.chapters[route[1]]){state.chapters[route[1]]='started';changed=true;}if(changed)persist();}
@@ -269,6 +349,8 @@
     if(!target){if(event.target.closest('a[href^="#"]')&&!event.target.closest('#sidebar'))document.body.classList.remove('menu-open');return;}
     const id=target.dataset.id;
     switch(target.dataset.action){
+      case 'highlight-selection':applyHighlight();break;
+      case 'clear-highlights':clearHighlights();break;
       case 'menu':document.body.classList.toggle('menu-open');target.setAttribute('aria-expanded',String(document.body.classList.contains('menu-open')));break;
       case 'favorite':if(!chapterById[id])return;state.favorites=state.favorites.includes(id)?state.favorites.filter(x=>x!==id):[...state.favorites,id];persist();render(false);showToast(state.favorites.includes(id)?'Chapitre ajouté aux favoris.':'Chapitre retiré des favoris.');break;
       case 'complete':if(!chapterById[id])return;state.chapters[id]=state.chapters[id]==='done'?'started':'done';persist();render(false);showToast(state.chapters[id]==='done'?'Chapitre marqué révisé.':'Chapitre marqué en cours.');break;
@@ -309,6 +391,11 @@
     }
   });
   document.addEventListener('submit',event=>{if(event.target.id==='search-form'){event.preventDefault();const query=event.target.elements.q.value.trim().slice(0,180);location.hash=`search/${encodeURIComponent(query)}`;}});
+  document.addEventListener('selectionchange',captureHighlightSelection);
+  document.addEventListener('pointerdown',event=>{if(event.target.closest('.study-highlighter button'))event.preventDefault();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)clearHighlights();});
+  window.addEventListener('pagehide',clearHighlights);
+  window.addEventListener('pageshow',event=>{if(event.persisted)clearHighlights();});
   document.addEventListener('input',event=>{if(event.target.id==='chapter-note'){const id=event.target.dataset.chapter;state.notes[id]=event.target.value;const success=persist();document.getElementById('note-status').textContent=success?'Notes enregistrées sur cet appareil.':'Enregistrement indisponible. Exporte tes notes avant de fermer.';}});
   document.getElementById('restore-file').addEventListener('change',async event=>{
     const file=event.target.files?.[0];if(!file)return;

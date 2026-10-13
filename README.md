@@ -24,6 +24,8 @@ Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js
 
 Les notes personnelles, favoris, réponses aux quiz et progrès sont enregistrés dans le navigateur de chaque visiteur. Ils ne sont pas envoyés à GitHub. Leur sauvegarde peut être exportée et restaurée depuis Mon espace personnel. Le format de sauvegarde conserve les anciens identifiants de cartes et les données déjà enregistrées.
 
+Les cours, fiches et textes de révision proposent un surlignage temporaire : sélectionner un passage, puis utiliser « Surligner la sélection ». « Tout effacer » retire les couleurs. Les surlignages s’effacent quand on change de lecture, quitte l’onglet ou recharge la page ; ils ne sont ni enregistrés ni exportés. Les notes personnelles restent indépendantes.
+
 ## Mises à jour
 
 GitHub Pages publie la branche `main`, à la racine. Les modifications du site sont publiées après chaque mise à jour de cette branche. Les mises à jour pédagogiques sont préparées à la demande de l’étudiante ; aucun service de génération n’est intégré au site.
