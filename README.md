@@ -62,3 +62,7 @@ Les noms et emplacements des documents doivent rester cohérents avec les liens 
 ## Publication
 
 Le site et les documents sont publics, conformément au choix explicite de l’étudiante. Aucune licence générale de réutilisation n’est accordée aux documents pédagogiques et aux ressources de tiers.
+
+## Apprendre pas à pas
+
+Cinq parcours courts proposent seize décisions expliquées : syllogisme, compétence, démonstration en droit public, réponse rédigée en histoire et oral en international. Chaque choix donne un retour ciblé puis mène à un atelier sans guidage. Les choix sont temporaires et ne constituent pas un score de maîtrise ; les brouillons des ateliers restent enregistrés. Six aides relient les difficultés courantes à une action et un exercice. Chaque lecture de chapitre donne accès à une routine de travail et à ses cartes, quiz et notes. Les repères pédagogiques universitaires sont accessibles dans « Me débloquer ».

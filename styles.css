@@ -39,3 +39,67 @@
 .td-session-grid,.exam-assessments{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin:24px 0}.td-session{display:block;background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--tone,var(--green));border-radius:14px;padding:24px;min-width:0}.td-session h3{font-family:'Libre Caslon Display',Georgia,serif;font-size:26px;line-height:1.3;margin:12px 0 15px}.td-session p{font-size:12px;color:var(--muted);line-height:1.85}.td-session .pill{white-space:normal;font-size:10px}.td-session .text-link{font-size:11px}.td-session:hover{border-color:#a9b99a}.td-documents{display:grid;gap:13px}.td-document{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:20px 23px;min-width:0}.td-document>div:first-child{min-width:0}.td-document h3{font-size:14px;overflow-wrap:anywhere;margin:9px 0 5px}.td-document p{margin:0}.td-document .page-actions{flex-shrink:0}.td-prose p{white-space:pre-wrap}.td-prose section{scroll-margin-top:165px}.td-prose h2{line-height:1.55}.td-prose .guide-sources{margin:15px 0 28px}.td-prose p,.td-prose h2{overflow-wrap:anywhere}.td-status{font-size:12px;color:var(--muted)}#td-supports,#td-correction,#td-practice{scroll-margin-top:165px}.td-target{background:#fff3bf;border-radius:8px;padding:12px}.exam-assessment{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--tone,var(--green));border-radius:14px;padding:26px;min-width:0}.exam-assessment:first-child{grid-column:1/-1;background:#edf2e6;border-color:#c4d0b7}.exam-assessment h2{font-size:28px;line-height:1.25}.exam-assessment .exam-date{font-size:13px;color:#6c7d55;font-weight:600;margin:15px 0 10px}.exam-assessment p{font-size:12px;line-height:1.85}.exam-assessment .btn{margin-top:10px}.exam-priority{background:#edf2e6;border-color:#c4d0b7;margin-top:24px}.exam-priority h2{font-size:30px}.exam-priority p{font-size:13px;color:var(--muted)}.exam-article-answer{margin:18px 0}.exam-article-answer summary{cursor:pointer;font-size:12px;font-weight:600;line-height:1.8}.exam-article-answer p{font-size:13px;line-height:1.9}.reference-card .source-link{margin:5px 10px 5px 0}.hero .btn+.btn{margin:10px 0 0 8px}
 @media(max-width:620px){.td-session-grid,.exam-assessments{grid-template-columns:minmax(0,1fr)}.td-session,.exam-assessment{padding:21px}.td-document{display:block;padding:20px}.td-document .page-actions{margin-top:15px}.td-document .btn{min-height:44px}.exam-assessment:first-child{grid-column:auto}.exam-assessment h2{font-size:26px}.hero .btn+.btn{margin:12px 0 0}.exam-priority h2{font-size:27px}.td-session h3{font-size:25px}}
 @media print{.td-document .page-actions{display:none}.td-session-grid,.exam-assessments{display:block}.td-session,.exam-assessment{break-inside:avoid}}
+
+/* Guided teaching and active reading */
+.guided-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:21px 0 30px}
+.guided-card{display:flex;flex-direction:column;align-items:flex-start;padding:24px;border:1px solid var(--line);border-top:3px solid var(--tone,var(--green));border-radius:14px;background:var(--paper);min-width:0}
+.guided-card:first-child:last-child{grid-column:1/-1}
+.guided-card h3{font-family:'Libre Caslon Display',Georgia,serif;font-size:26px;line-height:1.2;font-weight:400;margin:2px 0 12px}
+.guided-card p{font-size:12px;color:var(--muted);line-height:1.8;flex:1}
+.guided-card:hover{border-color:#a9b99a;color:var(--ink)}
+.guided-card .eyebrow{font-size:9px}
+.pedagogy-help{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-bottom:28px}
+.pedagogy-help p{margin-bottom:0;max-width:600px}
+.pedagogy-help>.btn{flex-shrink:0}
+.guided-progress{margin:24px 0;color:var(--muted);font-size:12px}
+.guided-progress>span{font-weight:600;color:var(--ink)}
+.guided-progress ol{list-style:none;padding:0;display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.guided-progress li{display:flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:11px}
+.guided-progress li[aria-current]{background:var(--green);border-color:var(--green);color:white}
+.guided-progress li.visited{background:#e9eddf;color:var(--green)}
+.guided-progress li>span{font-size:10px;font-weight:600}
+.guided-context{background:#edf1e5;margin-bottom:20px;padding:21px 25px}
+.guided-context p{line-height:1.9;color:var(--ink);margin-bottom:0;font-size:13px}
+.guided-question{padding:30px;margin-bottom:20px}
+.guided-question h2{font-size:29px;line-height:1.3;max-width:810px}
+.guided-question fieldset{margin:23px 0;padding:0;border:0;min-width:0;display:grid;gap:12px}
+.guided-option{display:flex;gap:13px;align-items:flex-start;padding:17px 20px;background:var(--paper);border:1px solid #d5dacb;border-radius:10px;line-height:1.8;font-size:13px;cursor:pointer}
+.guided-option input{flex-shrink:0;margin:5px 0 0;accent-color:var(--green);width:17px;height:17px}
+.guided-option:has(input:checked){border-color:var(--green);background:#eff2e8}
+.guided-option:has(input:focus-visible){outline:3px solid #ad7946;outline-offset:3px}
+.guided-option.expected{background:#eaf0e1;border-color:#9bad88}
+.guided-option.to-rethink{background:#f7eee3;border-color:#bc956a}
+.guided-option small{display:block;font-weight:600;font-size:11px;margin-top:6px}
+.guided-option:has(input:disabled){cursor:default}
+.guided-feedback{border-left:3px solid #829874;background:#f0f3e8;padding:20px 23px;margin:18px 0 24px;border-radius:0 10px 10px 0}
+.guided-feedback h3{font-size:16px}
+.guided-feedback p{font-size:13px;line-height:1.9;color:var(--ink)}
+.guided-feedback .guided-takeaway{border-top:1px solid #d6ddcc;padding-top:15px;margin-top:17px}
+.guided-feedback .small{font-size:12px;margin-bottom:0}
+.guided-finish{background:#edf1e5}
+.guided-finish p,.guided-finish li{font-size:13px;line-height:1.9;color:var(--ink)}
+.guided-finish ul{padding-left:22px;margin:18px 0 25px}
+.pedagogy-references{margin-top:20px;border-top:1px solid var(--line);padding:18px 0;font-size:12px}
+.pedagogy-references summary{cursor:pointer;font-weight:600}
+.pedagogy-references p{margin-top:18px;line-height:1.9;color:var(--muted);max-width:850px}
+.repair-list{display:grid;gap:14px;margin:26px 0}
+.repair-card{border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:0 23px;min-width:0}
+.repair-card summary{cursor:pointer;padding:20px 0;font-weight:600;font-size:14px;line-height:1.65}
+.repair-card>div{padding-bottom:22px}
+.repair-card p{font-size:13px;line-height:1.9;white-space:normal}
+.repair-card .repair-task{background:#eff2e7;border-radius:8px;padding:13px}
+.repair-card .page-actions{margin-top:17px}
+.practice-repairs .repair-card{padding:0 17px;margin-top:12px}
+.practice-repairs .repair-card summary{font-size:12px}
+.practice-repairs .repair-card p{font-size:12px}
+.practice-repairs .repair-card .btn{font-size:10px}
+.chapter-learning{padding:16px 21px;background:#edf1e5;border:1px solid #d7dfcc;border-radius:11px;margin-bottom:22px}
+.chapter-learning>summary{font-size:12px;font-weight:600;cursor:pointer}
+.chapter-learning ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px 32px;padding-left:21px;margin:23px 0}
+.chapter-learning li{font-size:12px;line-height:1.8;padding-left:3px}
+.chapter-learning p{margin:7px 0 0;color:var(--muted)}
+.chapter-learning-end p{font-size:13px;line-height:1.9;max-width:800px}
+.guided-question,.guided-context,.guided-card,.repair-card,.guided-finish{overflow-wrap:anywhere}
+@media(max-width:800px){.pedagogy-help{display:block}.pedagogy-help>.btn{margin-top:17px}.guided-card{padding:21px}}
+@media(max-width:620px){.guided-grid{grid-template-columns:minmax(0,1fr)}.guided-question{padding:22px}.guided-question h2{font-size:26px}.guided-option{padding:15px;gap:11px;min-height:48px}.guided-progress ol{gap:6px}.guided-progress li{font-size:10px;padding:7px 9px}.guided-context{padding:21px}.guided-feedback{padding:17px}.chapter-learning ol{grid-template-columns:minmax(0,1fr)}.repair-card{padding:0 19px}.guided-question .btn,.guided-finish .btn{min-height:44px}}
+@media print{.guided-progress,.guided-question fieldset,.guided-question>button,.guided-finish .page-actions,.pedagogy-help{display:none!important}.chapter-learning-end .page-actions{display:none}.guided-feedback{break-inside:avoid}}
