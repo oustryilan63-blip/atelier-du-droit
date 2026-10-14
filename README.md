@@ -2,7 +2,7 @@
 
 Espace personnel de révision du semestre 1 de L1 Droit, publié sur GitHub Pages.
 
-Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 33 chapitres. Il propose 188 flashcards, 66 questions de quiz avec correction, 104 repères chronologiques, seize schémas de révision, treize fiches de lecture d’articles officiels et dix-neuf entrées consacrées aux auteurs et juristes. Douze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories.
+Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 33 chapitres. Il propose 188 flashcards, 66 questions de quiz avec correction, 104 repères chronologiques, seize schémas de révision, treize fiches de lecture d’articles officiels et trente-cinq entrées consacrées aux auteurs et juristes. Douze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories. Une rubrique rassemble 51 corrections, actualisations, précisions et limites repérées dans les documents.
 
 [Ouvrir le site](https://oustryilan63-blip.github.io/atelier-du-droit/)
 
@@ -13,6 +13,8 @@ Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js
 ## Provenance et périmètre
 
 - Les cours sont les notes transmises par l’étudiante. Elles sont conservées sans correction silencieuse.
+- La relecture du 14 octobre 2026 compare les textes intégrés aux documents reçus et vérifie les points juridiques signalés sur des sources primaires. Les 51 notes ajoutées sont affichées sous les passages concernés et dans « Corrections & précisions ». Elles ne modifient pas les fichiers Word originaux et ne constituent pas une validation intégrale du cours par le professeur.
+- La recherche inclut les corrections, les mini-fiches et les lectures d’articles ajoutées, en plus des documents. Un résultat issu d’un passage annoté indique qu’une correction ou précision l’accompagne.
 - Les trois premières fiches sont les documents de révision transmis, avec leurs propres corrections et compléments. La fiche d’histoire du droit a été préparée à partir du cours actuel, jusqu’au CM5, en reprenant la présentation de la fiche d’institutions internationales.
 - Les définitions et chronologies sont issues des fiches. Soixante-six cartes de compréhension, douze cartes d’application et soixante-six questions de quiz sont ajoutées, avec leurs corrections et leur source. Chaque chapitre possède au moins deux cartes de compréhension et deux questions de quiz.
 - Les mini-fiches et cas sont des supports ajoutés, avec leurs sources et un accès à la fiche du chapitre. Les textes actuels sont vérifiés sur Légifrance, le Conseil constitutionnel, Vie publique, le ministère de la Justice et les Nations Unies. Les compléments d’histoire utilisent uniquement la fiche du cours actuel jusqu’au CM5. Les cas sont des exercices proposés, sans préjuger du format officiel du partiel.
@@ -22,6 +24,7 @@ Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js
 - Les fiches de lecture d’articles sont des compléments ajoutés, avec des liens vers Légifrance, le Conseil constitutionnel et les Nations Unies. Elles restent distinctes des consignes du professeur.
 - Le plan officiel et les ressources UNJF sont issus de la copie locale du projet. Moodle reste la référence actuelle du cours d’institutions internationales.
 - Le cours d’institutions internationales transmis s’arrête aux fondements des immunités diplomatiques. La suite du programme reste à fournir.
+- Une phrase de la section consacrée à la doctrine, en droit privé, est tronquée dans le fichier transmis. Elle est signalée sans inventer sa suite ; la fiche reste consultable séparément.
 - Le fichier du projet nommé Syllabus est une archive contenant un plan de cours. Le véritable syllabus 2026–2027 reste à fournir.
 
 Les notes personnelles, favoris, réponses aux quiz et progrès sont enregistrés dans le navigateur de chaque visiteur. Ils ne sont pas envoyés à GitHub. Leur sauvegarde peut être exportée et restaurée depuis Mon espace personnel. Le format de sauvegarde conserve les anciens identifiants de cartes et les données déjà enregistrées.
