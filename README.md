@@ -6,6 +6,16 @@ Le site rassemble le droit public, le droit privé, les institutions internation
 
 [Ouvrir le site](https://oustryilan63-blip.github.io/atelier-du-droit/)
 
+## Méthodologie et entraînement
+
+L’espace Méthodologie rassemble 11 guides expliqués, 13 ateliers corrigés et quatre parcours adaptés aux matières. Il couvre l’apprentissage du CM, la lecture d’un article, le syllogisme, le cas pratique, la compétence des juridictions, la fiche d’arrêt, la dissertation, les commentaires, les questions de cours et l’oral.
+
+Les méthodes s’appuient sur les documents retrouvés dans les dossiers de fac et sur des ressources universitaires identifiées dans l’espace Sources. Les documents anciens restent datés ; les notes personnelles et fiches préparées ne sont pas présentées comme des consignes officielles actuelles. Les exemples originaux, règles fictives et décisions simulées sont signalés. Les consignes du TD et de l’épreuve priment.
+
+Les majeures disposent d’ateliers d’argumentation en droit public et de raisonnement en droit privé. L’histoire propose des questions sur le CM actuel jusqu’au CM5 et une simulation d’une heure. L’international propose des simulations orales avec relances, sans présumer de leurs modalités officielles encore inconnues. Le commentaire d’arrêt figure comme initiation, sans annoncer le format du prochain partiel blanc.
+
+Chaque atelier offre un brouillon, des indices, un corrigé à ouvrir et une grille d’autoévaluation. Un chronomètre facultatif se met en pause lorsqu’on quitte l’atelier. Les brouillons, consignes personnelles et critères cochés restent dans le navigateur et sont inclus dans la sauvegarde exportée. Aucune note universitaire ni correction automatique du texte n’est produite.
+
 ## Consulter le site
 
 Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js`, `styles.css` et `favicon.svg` complètent cette entrée ; le dossier `documents` contient les originaux et les leçons UNJF.
@@ -27,7 +37,7 @@ Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js
 - Une phrase de la section consacrée à la doctrine, en droit privé, est tronquée dans le fichier transmis. Elle est signalée sans inventer sa suite ; la fiche reste consultable séparément.
 - Le fichier du projet nommé Syllabus est une archive contenant un plan de cours. Le véritable syllabus 2026–2027 reste à fournir.
 
-Les notes personnelles, favoris, réponses aux quiz et progrès sont enregistrés dans le navigateur de chaque visiteur. Ils ne sont pas envoyés à GitHub. Leur sauvegarde peut être exportée et restaurée depuis Mon espace personnel. Le format de sauvegarde conserve les anciens identifiants de cartes et les données déjà enregistrées.
+Les notes personnelles, favoris, réponses aux quiz, brouillons de méthodologie et progrès sont enregistrés dans le navigateur de chaque visiteur. Ils ne sont pas envoyés à GitHub. Leur sauvegarde peut être exportée et restaurée depuis Mon espace personnel. Le format de sauvegarde conserve la version 1, les anciens identifiants de cartes et les données déjà enregistrées ; les nouveaux champs de méthodologie sont facultatifs dans une ancienne sauvegarde.
 
 Les cours, fiches et textes de révision proposent un surlignage temporaire : sélectionner un passage, puis utiliser « Surligner la sélection ». « Tout effacer » retire les couleurs. Les surlignages s’effacent quand on change de lecture, quitte l’onglet ou recharge la page ; ils ne sont ni enregistrés ni exportés. Les notes personnelles restent indépendantes.
 
