@@ -1,5 +1,13 @@
 # L’Atelier du droit
 
+## Leçons expliquées et essais de transfert
+
+Six leçons ajoutées relient les quatre matières à une réponse rédigée : compétence et ressort en droit privé, introduction de dissertation et paragraphe de commentaire en droit public, réponse de cours en histoire, comparaison orale en institutions internationales. Leurs 39 passages commentés expliquent la fonction de chaque partie du raisonnement. Les modèles sont des propositions pédagogiques ; le commentaire porte sur un extrait, et la dissertation sur l’introduction et le plan, sans annoncer le format du partiel.
+
+Chaque leçon suit quatre étapes : comprendre les notions, observer la réponse et ses commentaires, rédiger un essai avec un fil facultatif, puis traiter deux variations sans ce fil. Dix-huit questions de rappel actif précèdent les modèles. Les références officielles et le périmètre du cours reçu sont indiqués ; l’histoire reste limitée au CM actuel jusqu’au CM5, et les modalités officielles de l’oral international restent à confirmer.
+
+Les dix-huit réponses personnelles restent sur l’appareil et figurent dans la sauvegarde compatible avec les anciennes versions. Une réponse modifiée revient à comparer ; deux textes différents importés sont conservés ensemble. « Mes difficultés » retrouve les essais non encore comparés. La comparaison est déclarative : aucune note ni correction automatique n’est produite. Les cours, fiches, anciens ateliers et identifiants de progression sont conservés.
+
 Espace personnel de révision du semestre 1 de L1 Droit, publié sur GitHub Pages.
 
 Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 38 chapitres. Il propose 292 flashcards, 117 questions de quiz avec correction, 104 repères chronologiques, vingt et un schémas de révision, treize fiches de lecture d’articles officiels et trente-six entrées consacrées aux auteurs et juristes. Quinze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories. Une rubrique rassemble 118 corrections, actualisations, précisions et limites repérées dans les documents.
