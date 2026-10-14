@@ -103,3 +103,7 @@
 @media(max-width:800px){.pedagogy-help{display:block}.pedagogy-help>.btn{margin-top:17px}.guided-card{padding:21px}}
 @media(max-width:620px){.guided-grid{grid-template-columns:minmax(0,1fr)}.guided-question{padding:22px}.guided-question h2{font-size:26px}.guided-option{padding:15px;gap:11px;min-height:48px}.guided-progress ol{gap:6px}.guided-progress li{font-size:10px;padding:7px 9px}.guided-context{padding:21px}.guided-feedback{padding:17px}.chapter-learning ol{grid-template-columns:minmax(0,1fr)}.repair-card{padding:0 19px}.guided-question .btn,.guided-finish .btn{min-height:44px}}
 @media print{.guided-progress,.guided-question fieldset,.guided-question>button,.guided-finish .page-actions,.pedagogy-help{display:none!important}.chapter-learning-end .page-actions{display:none}.guided-feedback{break-inside:avoid}}
+
+/* Peer correction reconciliation */
+#td-peer-review{scroll-margin-top:165px}.peer-review>.peer-scope{font-size:11px;line-height:1.9}.peer-review .peer-correction{margin-top:20px}.peer-review .peer-correction>.reader-body{padding:23px}.peer-review .reader-body h2{font-size:18px}.peer-review .reader-body p{font-size:13px}.peer-review>h2{font-size:27px}
+@media(max-width:620px){.peer-review .peer-correction>.reader-body{padding:18px}.peer-review>h2{font-size:25px}}

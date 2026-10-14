@@ -8,13 +8,13 @@ Le site rassemble le droit public, le droit privé, les institutions internation
 
 ## Méthodologie et entraînement
 
-L’espace Méthodologie rassemble 11 guides expliqués, 22 ateliers corrigés et quatre parcours adaptés aux matières. Il couvre l’apprentissage du CM, la lecture d’un article, le syllogisme, le cas pratique, la compétence des juridictions, la fiche d’arrêt, la dissertation, les commentaires, les questions de cours et l’oral.
+L’espace Méthodologie rassemble 11 guides expliqués, 23 ateliers corrigés et quatre parcours adaptés aux matières. Il couvre l’apprentissage du CM, la lecture d’un article, le syllogisme, le cas pratique, la compétence des juridictions, la fiche d’arrêt, la dissertation, les commentaires, les questions de cours et l’oral.
 
 Les méthodes s’appuient sur les documents retrouvés dans les dossiers de fac et sur des ressources universitaires identifiées dans l’espace Sources. Les documents anciens restent datés ; les notes personnelles et fiches préparées ne sont pas présentées comme des consignes officielles actuelles. Les exemples originaux, règles fictives et décisions simulées sont signalés. Les consignes du TD et de l’épreuve priment.
 
 Les majeures disposent d’ateliers d’argumentation en droit public et de raisonnement en droit privé. L’histoire propose des questions sur le CM actuel jusqu’au CM5 et une simulation d’une heure. L’international propose des simulations orales avec relances, sans présumer de leurs modalités officielles encore inconnues. Le commentaire d’arrêt figure comme initiation, sans annoncer le format du prochain partiel blanc.
 
-La page « Mes essais et ateliers » rassemble les vingt-deux entraînements, avec des filtres par matière, durée et avancement. Elle retrouve les brouillons, les critères restant à vérifier après comparaison et les points personnels à retravailler. Chaque atelier permet de noter une difficulté et une action concrète ; ce bilan est enregistré et inclus dans les sauvegardes. Les filtres et les critères ne constituent pas une évaluation automatique.
+La page « Mes essais et ateliers » rassemble les vingt-trois entraînements, avec des filtres par matière, durée et avancement. Elle retrouve les brouillons, les critères restant à vérifier après comparaison et les points personnels à retravailler. Chaque atelier permet de noter une difficulté et une action concrète ; ce bilan est enregistré et inclus dans les sauvegardes. Les filtres et les critères ne constituent pas une évaluation automatique.
 
 Chaque atelier offre un brouillon, des indices, un corrigé à ouvrir et une grille d’autoévaluation. Un chronomètre facultatif se met en pause lorsqu’on quitte l’atelier. Ses boutons et le suivi de comparaison préservent le corrigé ouvert, les surlignages et le texte en cours. Les brouillons, consignes personnelles et critères cochés restent dans le navigateur et sont inclus dans la sauvegarde exportée. Aucune note universitaire ni correction automatique du texte n’est produite.
 
@@ -66,3 +66,7 @@ Le site et les documents sont publics, conformément au choix explicite de l’�
 ## Apprendre pas à pas
 
 Cinq parcours courts proposent seize décisions expliquées : syllogisme, compétence, démonstration en droit public, réponse rédigée en histoire et oral en international. Chaque choix donne un retour ciblé puis mène à un atelier sans guidage. Les choix sont temporaires et ne constituent pas un score de maîtrise ; les brouillons des ateliers restent enregistrés. Six aides relient les difficultés courantes à une action et un exercice. Chaque lecture de chapitre donne accès à une routine de travail et à ses cartes, quiz et notes. Les repères pédagogiques universitaires sont accessibles dans « Me débloquer ».
+
+## Correction complémentaire du TD 2 privé
+
+Les notes transmises par une camarade dans TD2 (1).doc ont été comparées au support de séance et aux textes officiels. Neuf points expliqués distinguent leurs apports des rectifications : ordre de juridiction, voies de recours, attributions spéciales, options territoriales, peines, hypothèses du cas Diane, référé et limites du schéma. Un nouvel atelier traite le JEX, le pôle social du TJ et le tribunal paritaire des baux ruraux. Le fichier Word de la camarade et ses métadonnées ne sont pas publiés ; les explications anonymes et sourcées restent identifiées comme des ajouts issus de notes d’étudiante. Le statut de corrigé officiel n’est pas établi et le périmètre du contrôle n’est pas déduit de ces notes.
