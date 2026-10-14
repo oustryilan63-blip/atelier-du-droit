@@ -14,7 +14,9 @@ Les méthodes s’appuient sur les documents retrouvés dans les dossiers de fac
 
 Les majeures disposent d’ateliers d’argumentation en droit public et de raisonnement en droit privé. L’histoire propose des questions sur le CM actuel jusqu’au CM5 et une simulation d’une heure. L’international propose des simulations orales avec relances, sans présumer de leurs modalités officielles encore inconnues. Le commentaire d’arrêt figure comme initiation, sans annoncer le format du prochain partiel blanc.
 
-Chaque atelier offre un brouillon, des indices, un corrigé à ouvrir et une grille d’autoévaluation. Un chronomètre facultatif se met en pause lorsqu’on quitte l’atelier. Les brouillons, consignes personnelles et critères cochés restent dans le navigateur et sont inclus dans la sauvegarde exportée. Aucune note universitaire ni correction automatique du texte n’est produite.
+La page « Mes essais et ateliers » rassemble les treize entraînements, avec des filtres par matière, durée et avancement. Elle retrouve les brouillons, les critères restant à vérifier après comparaison et les points personnels à retravailler. Chaque atelier permet de noter une difficulté et une action concrète ; ce bilan est enregistré et inclus dans les sauvegardes. Les filtres et les critères ne constituent pas une évaluation automatique.
+
+Chaque atelier offre un brouillon, des indices, un corrigé à ouvrir et une grille d’autoévaluation. Un chronomètre facultatif se met en pause lorsqu’on quitte l’atelier. Ses boutons et le suivi de comparaison préservent le corrigé ouvert, les surlignages et le texte en cours. Les brouillons, consignes personnelles et critères cochés restent dans le navigateur et sont inclus dans la sauvegarde exportée. Aucune note universitaire ni correction automatique du texte n’est produite.
 
 ## Consulter le site
 
