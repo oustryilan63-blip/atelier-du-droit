@@ -2,21 +2,31 @@
 
 Espace personnel de révision du semestre 1 de L1 Droit, publié sur GitHub Pages.
 
-Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 38 chapitres. Il propose 274 flashcards, 117 questions de quiz avec correction, 104 repères chronologiques, vingt et un schémas de révision, treize fiches de lecture d’articles officiels et trente-six entrées consacrées aux auteurs et juristes. Douze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories. Une rubrique rassemble 52 corrections, actualisations, précisions et limites repérées dans les documents.
+Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 38 chapitres. Il propose 292 flashcards, 117 questions de quiz avec correction, 104 repères chronologiques, vingt et un schémas de révision, treize fiches de lecture d’articles officiels et trente-six entrées consacrées aux auteurs et juristes. Douze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories. Une rubrique rassemble 52 corrections, actualisations, précisions et limites repérées dans les documents.
 
 [Ouvrir le site](https://oustryilan63-blip.github.io/atelier-du-droit/)
 
 ## Méthodologie et entraînement
 
-L’espace Méthodologie rassemble 11 guides expliqués, 13 ateliers corrigés et quatre parcours adaptés aux matières. Il couvre l’apprentissage du CM, la lecture d’un article, le syllogisme, le cas pratique, la compétence des juridictions, la fiche d’arrêt, la dissertation, les commentaires, les questions de cours et l’oral.
+L’espace Méthodologie rassemble 11 guides expliqués, 22 ateliers corrigés et quatre parcours adaptés aux matières. Il couvre l’apprentissage du CM, la lecture d’un article, le syllogisme, le cas pratique, la compétence des juridictions, la fiche d’arrêt, la dissertation, les commentaires, les questions de cours et l’oral.
 
 Les méthodes s’appuient sur les documents retrouvés dans les dossiers de fac et sur des ressources universitaires identifiées dans l’espace Sources. Les documents anciens restent datés ; les notes personnelles et fiches préparées ne sont pas présentées comme des consignes officielles actuelles. Les exemples originaux, règles fictives et décisions simulées sont signalés. Les consignes du TD et de l’épreuve priment.
 
 Les majeures disposent d’ateliers d’argumentation en droit public et de raisonnement en droit privé. L’histoire propose des questions sur le CM actuel jusqu’au CM5 et une simulation d’une heure. L’international propose des simulations orales avec relances, sans présumer de leurs modalités officielles encore inconnues. Le commentaire d’arrêt figure comme initiation, sans annoncer le format du prochain partiel blanc.
 
-La page « Mes essais et ateliers » rassemble les treize entraînements, avec des filtres par matière, durée et avancement. Elle retrouve les brouillons, les critères restant à vérifier après comparaison et les points personnels à retravailler. Chaque atelier permet de noter une difficulté et une action concrète ; ce bilan est enregistré et inclus dans les sauvegardes. Les filtres et les critères ne constituent pas une évaluation automatique.
+La page « Mes essais et ateliers » rassemble les vingt-deux entraînements, avec des filtres par matière, durée et avancement. Elle retrouve les brouillons, les critères restant à vérifier après comparaison et les points personnels à retravailler. Chaque atelier permet de noter une difficulté et une action concrète ; ce bilan est enregistré et inclus dans les sauvegardes. Les filtres et les critères ne constituent pas une évaluation automatique.
 
 Chaque atelier offre un brouillon, des indices, un corrigé à ouvrir et une grille d’autoévaluation. Un chronomètre facultatif se met en pause lorsqu’on quitte l’atelier. Ses boutons et le suivi de comparaison préservent le corrigé ouvert, les surlignages et le texte en cours. Les brouillons, consignes personnelles et critères cochés restent dans le navigateur et sont inclus dans la sauvegarde exportée. Aucune note universitaire ni correction automatique du texte n’est produite.
+
+## TD et préparation des évaluations
+
+La rubrique Mes TD rassemble 19 fichiers originaux, avec lecture du texte et accès aux PDF, Word ou Pages. Les supports, les préparations et notes reçues puis les explications ajoutées restent distingués. Les trois premières séances des deux majeures ont des réponses, rectifications et entraînements reliés. Les dossiers4à8 de droit public restent disponibles en avance. TD3.pages porte sur la souveraineté en droit public et est classé dans cette matière. Les schémas, scans et mises en page restent accessibles dans les originaux ; le lecteur ne présente pas une extraction vide comme une page vide.
+
+Le fichier privé td4.docx est verrouillé par une application et a été laissé de côté à la demande de l’étudiant. Les dernières corrections et les annexes annoncées dans la séance3 restent manquantes : aucun contenu n’a été inventé pour les remplacer. Les corrections proposées sur le site ne sont pas certifiées comme un corrigé officiel de l’enseignant.
+
+La préparation des examens distingue les dates confirmées par l’étudiant : contrôle privé du20octobre2026,20minutes pendant le TD de18h30à20h ; blanc public du22octobre,11h–12h30 ; blanc privé du14novembre,14h–18h. Les lieux, contacts et autres informations de l’agenda personnel ne sont pas publiés. Aucun événement d’agenda n’a été créé ou modifié.
+
+Deux simulations de20minutes, les trois cas du TD2, une question de cours sur les voies de recours et deux simulations publiques de90minutes et quatre cas courts de compétences spéciales ajoutent neuf ateliers. Dix-huit cartes d’articles possèdent leur lot dédié avec suivi de mémorisation et sources officielles. Le format précis des blancs et le programme final de novembre restent à confirmer ; les simulations sont des propositions de travail. Les anciens brouillons et identifiants de progression sont conservés.
 
 ## Consulter le site
 
