@@ -1,5 +1,15 @@
 # L’Atelier du droit
 
+## Contrôle privé du 20 octobre 2026 : parcours ciblé
+
+L’entrée « Mon contrôle privé » rassemble la préparation du contrôle de séance 7 : 20 minutes pendant le TD de 18 h 30 à 20 h, cas pratique de compétence et question de cours sur les TD, selon les indications de l’étudiant. Le début exact, le barème et la question précise ne sont pas confirmés. Le blanc privé du 14 novembre, 14 h–18 h, reste distinct.
+
+Le parcours suit faits utiles → question → compétence matérielle → compétence territoriale, avec règle, faits qualifiés et conclusion pour chaque difficulté. Trois entrées organisent le travail : retenir les articles (17 rappels, dont cinq repères prioritaires), expliquer le TD3 (neuf définitions, 31 questions d’arrêts, trois modèles de cours, schéma et lecture des annexes), puis rédiger (trois copies guidées de sept champs indépendants, huit microcas et deux simulations de 20 minutes). Les deux simulations incluent une question de cours et le cas de compétence ; les aides restent absentes pendant le compte à rebours.
+
+Les supports du TD, les notes reçues, les réponses pédagogiques et les cas inventés gardent leurs statuts. Les références sont vérifiées au 15 octobre 2026 ; les règles territoriales civiles ordinaires ne sont pas généralisées au travail, à la famille, au pénal ou à l’administratif. Les détails spéciaux sont proposés selon le sujet, sans imposer la mémorisation de toute la liste pour ce contrôle. Les conditions de la CCD suivent la rédaction applicable depuis le 25 juillet 2026.
+
+Les réponses sont cachées initialement. Les écrits et les repères « À revoir / Je sais l’expliquer » sont locaux, exportables avec la sauvegarde version 1 ; une modification retire la comparaison antérieure. Les réponses rédigées n’ont pas de note automatique ; les choix des microcas sont corrigés en vert et rouge. L’import conserve les textes différents et retire la validation en cas de conflit. Les anciens cours, fiches, documents, identifiants, brouillons et copies chronométrées sont conservés.
+
 ## Leçons expliquées et essais de transfert
 
 Six leçons ajoutées relient les quatre matières à une réponse rédigée : compétence et ressort en droit privé, introduction de dissertation et paragraphe de commentaire en droit public, réponse de cours en histoire, comparaison orale en institutions internationales. Leurs 39 passages commentés expliquent la fonction de chaque partie du raisonnement. Les modèles sont des propositions pédagogiques ; le commentaire porte sur un extrait, et la dissertation sur l’introduction et le plan, sans annoncer le format du partiel.
