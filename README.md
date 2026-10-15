@@ -1,5 +1,15 @@
 # L’Atelier du droit
 
+## Parcours de chapitre, questions ouvertes et rappels
+
+« Apprendre un chapitre » organise les quatre matières en 38 parcours : trois objectifs spécifiques, une explication, un exemple rédigé commenté et quatre questions ouvertes (expliquer, distinguer, corriger, appliquer). Les 152 questions disposent chacune d’une variante qui change une difficulté ou un critère utile. Les réponses restent initialement fermées ; les essais et les premières réponses comparées sont sauvegardés pour permettre une comparaison ultérieure. Les six leçons détaillées antérieures restent accessibles.
+
+« Mes rappels » rassemble les questions ouvertes déjà travaillées, les articles et questions du TD3 comparés, ainsi que les cartes déjà vues arrivées à échéance. Les délais proposés après une réussite déclarée progressent de 1 à 3, 7, 14, 30 puis 60 jours ; un point à reprendre revient après environ dix minutes. Des réussites répétées le même jour n’augmentent pas le niveau. Les questions alternent entre énoncé initial et variante. Les anciens délais des cartes restent conservés jusqu’à une nouvelle évaluation ; les anciens repères du contrôle acquièrent une date lors de la prochaine comparaison. Le site ne crée pas de notification ni de rappel externe.
+
+Un bilan d’erreurs relie les questions ouvertes, ateliers, copies guidées et copies chronométrées terminées à neuf petits exercices de réécriture : référence, conditions, qualification, application, conclusion, structure, chronologie, paraphrase et oral. Les rubriques proposées dépendent de la matière. Les cases et les reprises sont personnelles ; une modification de la production rouvre le bilan. Les aides restent absentes pendant une copie chronométrée en cours.
+
+Ces ajouts sont pédagogiques, reliés aux supports et annotations disponibles. Ils ne complètent pas artificiellement les CM manquants : histoire limitée au cours actuel jusqu’au CM5, international 7–11 identifié comme complément UNJF, et modalités officielles des épreuves à confirmer lorsqu’elles ne sont pas fournies. Les réponses libres ne sont ni notées ni corrigées automatiquement. Les nouveaux textes, premières versions, rappels et bilans figurent dans la sauvegarde version 1, compatible avec les anciennes sauvegardes. Un import conserve les textes différents et rouvre la comparaison en cas de conflit.
+
 ## Contrôle privé du 20 octobre 2026 : parcours ciblé
 
 L’entrée « Mon contrôle privé » rassemble la préparation du contrôle de séance 7 : 20 minutes pendant le TD de 18 h 30 à 20 h, cas pratique de compétence et question de cours sur les TD, selon les indications de l’étudiant. Le début exact, le barème et la question précise ne sont pas confirmés. Le blanc privé du 14 novembre, 14 h–18 h, reste distinct.
