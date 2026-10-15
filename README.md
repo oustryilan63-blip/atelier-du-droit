@@ -42,13 +42,13 @@ Le site rassemble le droit public, le droit privé, les institutions internation
 
 ## Méthodologie et entraînement
 
-L’espace Méthodologie rassemble 11 guides expliqués, 23 ateliers corrigés et quatre parcours adaptés aux matières. Il couvre l’apprentissage du CM, la lecture d’un article, le syllogisme, le cas pratique, la compétence des juridictions, la fiche d’arrêt, la dissertation, les commentaires, les questions de cours et l’oral.
+L’espace Méthodologie rassemble 11 guides expliqués, 24 ateliers corrigés et quatre parcours adaptés aux matières. Il couvre l’apprentissage du CM, la lecture d’un article, le syllogisme, le cas pratique, la compétence des juridictions, la fiche d’arrêt, la dissertation, les commentaires, les questions de cours et l’oral.
 
 Les méthodes s’appuient sur les documents retrouvés dans les dossiers de fac et sur des ressources universitaires identifiées dans l’espace Sources. Les documents anciens restent datés ; les notes personnelles et fiches préparées ne sont pas présentées comme des consignes officielles actuelles. Les exemples originaux, règles fictives et décisions simulées sont signalés. Les consignes du TD et de l’épreuve priment.
 
 Les majeures disposent d’ateliers d’argumentation en droit public et de raisonnement en droit privé. L’histoire propose des questions sur le CM actuel jusqu’au CM5 et une simulation d’une heure. L’international propose des simulations orales avec relances, sans présumer de leurs modalités officielles encore inconnues. Le commentaire d’arrêt figure comme initiation, sans annoncer le format du prochain partiel blanc.
 
-La page « Mes essais et ateliers » rassemble les vingt-trois entraînements, avec des filtres par matière, durée et avancement. Elle retrouve les brouillons, les critères restant à vérifier après comparaison et les points personnels à retravailler. Chaque atelier permet de noter une difficulté et une action concrète ; ce bilan est enregistré et inclus dans les sauvegardes. Les filtres et les critères ne constituent pas une évaluation automatique.
+La page « Mes essais et ateliers » rassemble les vingt-quatre entraînements, avec des filtres par matière, durée et avancement. Elle retrouve les brouillons, les critères restant à vérifier après comparaison et les points personnels à retravailler. Chaque atelier permet de noter une difficulté et une action concrète ; ce bilan est enregistré et inclus dans les sauvegardes. Les filtres et les critères ne constituent pas une évaluation automatique.
 
 Chaque atelier offre un brouillon, des indices, un corrigé à ouvrir et une grille d’autoévaluation. Un chronomètre facultatif se met en pause lorsqu’on quitte l’atelier. Ses boutons et le suivi de comparaison préservent le corrigé ouvert, les surlignages et le texte en cours. Les brouillons, consignes personnelles et critères cochés restent dans le navigateur et sont inclus dans la sauvegarde exportée. Aucune note universitaire ni correction automatique du texte n’est produite.
 
@@ -119,10 +119,14 @@ Dans Préparer mes examens, « Mon récapitulatif relu » explique les trois pag
 
 « Mes difficultés » rassemble les derniers échecs de quiz lorsqu’ils sont connus, les cartes marquées À revoir, les ateliers à comparer ou retravailler et les bilans des copies. Une réussite ancienne du quiz reste conservée séparément du dernier résultat. Les reprises ciblées permettent de refaire exactement la question ou la carte. Marquer un point personnel retravaillé conserve son texte et ne valide pas automatiquement une maîtrise.
 
-Les 23 ateliers disposent d’un mode examen distinct. Le sujet n’apparaît qu’au démarrage ; indices, canevas, grille et corrigé sont absents du parcours pendant la rédaction. Chaque copie possède son propre texte, séparé du brouillon habituel. Le compte à rebours continue après navigation ou rechargement ; à l’échéance, la copie est figée. Une fin manuelle est possible. Le corrigé et la grille deviennent alors accessibles, sans note automatique. Les copies en cours se retrouvent depuis l’accueil et les évaluations ; les anciennes copies restent consultables pour chaque sujet.
+Les 24 ateliers disposent d’un mode examen distinct. Le sujet n’apparaît qu’au démarrage ; indices, canevas, grille et corrigé sont absents du parcours pendant la rédaction. Chaque copie possède son propre texte, séparé du brouillon habituel. Le compte à rebours continue après navigation ou rechargement ; à l’échéance, la copie est figée. Une fin manuelle est possible. Le corrigé et la grille deviennent alors accessibles, sans note automatique. Les copies en cours se retrouvent depuis l’accueil et les évaluations ; les anciennes copies restent consultables pour chaque sujet.
 
 Ces données sont enregistrées dans le navigateur et incluses dans la sauvegarde version 1, compatible avec les sauvegardes antérieures. Lors d’un import, deux copies différentes portant le même identifiant sont conservées séparément. Aucun compte, service de génération ou envoi automatique n’est ajouté.
 
 ## Annexes de méthode du TD3 privé
 
 Le PDF de 36 pages réunit la note Weber de 2009 (avec un encadré de classement de 2021) et un dossier de presse de 2019 sur la rédaction. L’original est conservé à l’identique. Quatre explications et mini-entraînements distinguent les voix d’un arrêt, les styles de rédaction, la portée du dispositif et les indices de publication. Les références anciennes reçoivent des avis de date et d’actualisation dans la lecture. La page de presse historique n’est pas indexée comme ressource de contact. Ces annexes ne constituent pas un corrigé professoral des arrêts de la séance ni de nouvelles consignes d’épreuve.
+
+## TD4 public et commentaire de Hauriou
+
+Les notes de camarade reçues le 15 octobre 2026 sont intégrées sous forme de huit explications et de cinq points de relecture. Un atelier de 25 minutes sur le commentaire est accessible depuis le TD4, la méthodologie de droit public et la préparation au blanc public. Les propositions de problématique, de plan et de paragraphe restent distinguées des consignes et corrections officielles. Aucun statut de séance effectuée ni programme du blanc n’est déduit du document ; le fichier personnel de la camarade et ses métadonnées ne sont pas diffusés.
