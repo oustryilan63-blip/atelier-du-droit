@@ -1,5 +1,11 @@
 # L’Atelier du droit
 
+## Relecture des nouveaux parcours · 15 octobre 2026
+
+Les 38 parcours ont été relus intégralement : 114 objectifs, les explications, 38 modèles commentés, 152 questions et leurs 152 variantes, avec leurs réponses, indices et critères de comparaison. Les neuf exercices de reprise d’erreurs ont également été relus. Les points sensibles sont confrontés aux textes officiels actuels et aux sources historiques et universitaires identifiées ; les références contrôlées et les précisions utiles se trouvent dans « Sources et périmètre du parcours ».
+
+La relecture corrige des ambiguïtés, complète certaines conditions et rectifie les renvois vers les versions des textes. La date de relecture est liée au contenu effectivement vérifié : une modification ultérieure du parcours retire cette mention tant qu’elle n’a pas été revue. Les réponses restent des propositions pédagogiques, distinctes d’un corrigé officiel du professeur. L’histoire reste limitée au CM5 ; les compléments UNJF d’international conservent leur statut et les consignes d’épreuve non reçues ne sont pas inventées.
+
 ## Parcours de chapitre, questions ouvertes et rappels
 
 « Apprendre un chapitre » organise les quatre matières en 38 parcours : trois objectifs spécifiques, une explication, un exemple rédigé commenté et quatre questions ouvertes (expliquer, distinguer, corriger, appliquer). Les 152 questions disposent chacune d’une variante qui change une difficulté ou un critère utile. Les réponses restent initialement fermées ; les essais et les premières réponses comparées sont sauvegardés pour permettre une comparaison ultérieure. Les six leçons détaillées antérieures restent accessibles.
