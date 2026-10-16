@@ -165,3 +165,6 @@
 
 /* Références de la relecture des cartes et quiz, après la réponse. */
 .content-review{margin-top:18px;text-align:left;border-top:1px solid #d2dacc;padding:14px 0;font-size:13px;line-height:1.7}.content-review summary{cursor:pointer;font-weight:600;color:#405b4b}.content-review .guide-sources{display:flex;flex-wrap:wrap;gap:8px 18px}.content-review p{font-size:13px}
+
+/* Dated sources for the received TD5 */
+#td-chronology{scroll-margin-top:165px}.td-chronology{list-style:none;padding-left:22px;border-left:2px solid #dce4d7}.td-chronology>li+li{margin-top:30px}.td-chronology h3{margin-top:0}.td-chronology .guide-sources{margin-top:12px}
