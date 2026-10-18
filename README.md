@@ -2,6 +2,8 @@
 
 ## Actualité juridique · 18 octobre 2026
 
+La rubrique comporte une recherche dans les éditions avec filtre France/international, des liens permanents par date et une pagination des archives. Les éditions sans nouvelle brève restent visibles avec leur note de vérification. Chaque brève propose une estimation de lecture, des raccourcis vers les explications, le vocabulaire, les entraînements et les sources. Les deux premières brèves disposent de quatre termes expliqués et de deux mini-QCM relus, avec réponse correcte en vert, choix erroné en rouge et explication. Les essais restent temporaires et ne modifient pas la progression générale.
+
 La rubrique « Actualité juridique » propose une sélection quotidienne française et internationale, des archives et un accès depuis l’accueil et la recherche. Chaque brève précise les dates de l’événement, de la publication lorsqu’elle est établie et de la vérification. Elle sépare les faits sourcés des explications ajoutées, indique le statut de la décision ou du texte et propose un lien avec les cours de L1 et une question de rappel dont la réponse reste fermée.
 
 La première édition traite d’un arrêt de cassation avec renvoi du 14 octobre 2026 et d’une demande d’avis consultatif acceptée par la CEDH le même jour, annoncée le 15. Les dates distinctes et les limites sont précisées. Les jours sans nouvelle information suffisamment vérifiée peuvent comporter une note sans nouvelle brève ; les anciennes éditions restent accessibles. Le site affiche la dernière date de vérification et ne présente pas automatiquement une ancienne édition comme celle du jour.

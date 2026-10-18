@@ -220,41 +220,99 @@
   // BEGIN NEWS UI
   // Actualités : données éditoriales séparées du cours et de la progression.
   const newsData=window.STUDY_NEWS||{lastChecked:null,editions:[],items:[]};
+  const newsAnswers=Object.create(null);
   const newsItems=()=>[...newsData.items].sort((a,b)=>b.edition.localeCompare(a.edition)||a.scope.localeCompare(b.scope));
+  const newsEditions=()=>[...newsData.editions].sort((a,b)=>b.date.localeCompare(a.date));
   const newsScope=id=>id==='france'?'France':'International';
   const newsToday=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Paris'});
+  const newsMinutes=n=>Math.max(2,Math.ceil([n.summary,...n.facts,...n.explanation,n.course.text,...(n.glossary||[]).map(g=>g.meaning),n.check?.question||'',n.check?.explanation||''].join(' ').split(/\s+/).length/180)+1);
+  function newsListUrl(scope='all',query='',page=1){
+    if(query)return '#actualites/recherche/'+encodeURIComponent(query)+'/'+scope+(page>1?'/'+page:'');
+    return '#actualites'+(scope==='all'?(page>1?'/all':''):'/'+scope)+(page>1?'/'+page:'');
+  }
   function newsFreshness(){
     if(!newsData.lastChecked)return notice('La première sélection est en préparation.');
     const checked=newsData.lastChecked;
-    return `<div class="news-verification"><span class="pill">${icon('check')}Vérifié le ${dateLabel(checked)}</span><p>${checked===newsToday()?'La sélection a été vérifiée aujourd’hui. Les événements peuvent être antérieurs : leurs dates sont précisées dans chaque brève.':'Aucune vérification datée d’aujourd’hui n’est encore affichée. La dernière sélection reste consultable ci-dessous.'}</p></div>`;
+    return `<div class="news-verification"><span class="pill">${icon('check')}Vérifié le ${dateLabel(checked)}</span><p>${checked===newsToday()?'La sélection a été vérifiée aujourd’hui. Les dates des événements sont précisées dans les brèves.':'Aucune vérification datée d’aujourd’hui n’est encore affichée. La dernière sélection reste consultable ci-dessous.'}</p></div>`;
+  }
+  function newsSearch(query='',scope='all'){
+    const selected=['france','international'].includes(scope)?scope:'all';
+    return `<form id="news-search-form" class="news-search" role="search" aria-label="Rechercher dans les actualités"><div class="news-search-field"><label for="news-query">Rechercher dans les éditions</label><input id="news-query" name="q" type="search" maxlength="160" value="${esc(query)}" placeholder="Un sujet, une institution, un mot…"></div><div class="news-search-field"><label for="news-scope">Zone</label><select name="scope" id="news-scope">${[['all','France & international'],['france','France'],['international','International']].map(([id,label])=>`<option value="${id}" ${selected===id?'selected':''}>${label}</option>`).join('')}</select></div><button class="btn primary" type="submit">${icon('search')}Rechercher</button></form>`;
   }
   function newsCard(n){
-    return `<article class="news-card"><div class="news-meta"><span class="pill ${n.scope==='france'?'':'blue'}">${newsScope(n.scope)}</span><time datetime="${esc(n.edition)}">Édition du ${dateLabel(n.edition)}</time></div><h3><a href="#actualites/article/${esc(n.id)}">${esc(n.title)}</a></h3><p>${esc(n.summary)}</p><p class="small muted">${esc(n.institution)} · ${esc(n.status)}</p><a class="text-link" href="#actualites/article/${esc(n.id)}">Comprendre cette actualité ${icon('arrow')}</a></article>`;
+    return `<article class="news-card"><div class="news-meta"><span class="pill ${n.scope==='france'?'':'blue'}">${newsScope(n.scope)}</span><time datetime="${esc(n.edition)}">${dateLabel(n.edition)}</time><span>${newsMinutes(n)} min · lecture et rappel</span></div><h3><a href="#actualites/article/${esc(n.id)}">${esc(n.title)}</a></h3><p>${esc(n.summary)}</p><p class="small muted">${esc(n.institution)} · ${esc(n.status)}</p>${n.corrections?.length?`<p class="news-update">Précisé le ${dateLabel(n.corrections.at(-1).date)}</p>`:''}<a class="text-link" href="#actualites/article/${esc(n.id)}">Comprendre et m’entraîner ${icon('arrow')}</a></article>`;
   }
   function newsHome(){
     const first=newsItems().slice(0,2);
     if(!first.length)return '';
-    return `<section class="spaced news-home"><div class="section-heading"><div><span class="eyebrow">LE DROIT DANS L’ACTUALITÉ</span><h2>Deux nouvelles pour faire le lien.</h2></div><a class="text-link" href="#actualites">Toute l’actualité ${icon('arrow')}</a></div><p class="small muted">Dernière vérification : ${dateLabel(newsData.lastChecked)} · Explications ajoutées pour la L1.</p><div class="news-grid">${first.map(newsCard).join('')}</div></section>`;
+    return `<section class="spaced news-home"><div class="section-heading"><div><span class="eyebrow">LE DROIT DANS L’ACTUALITÉ</span><h2>Relier l’actualité à mes cours.</h2></div><a class="text-link" href="#actualites">Toute l’actualité ${icon('arrow')}</a></div><p class="small muted">Dernière vérification : ${dateLabel(newsData.lastChecked)} · Explications ajoutées pour la L1.</p><div class="news-grid">${first.map(newsCard).join('')}</div></section>`;
+  }
+  function newsNav(scope,query=''){
+    return `<nav class="filters" aria-label="Filtrer les actualités">${[['all',query?'Tout':'Dernière édition'],['france','France'],['international','International'],['archives','Toutes les éditions']].map(([id,label])=>`<a class="filter-chip ${id===scope?'active':''}" href="${esc(newsListUrl(id,query))}" ${id===scope?'aria-current="page"':''}>${label}</a>`).join('')}</nav>`;
+  }
+  function newsPagination(page,total,scope,query=''){
+    if(total<=1)return '';
+    return `<nav class="news-pagination" aria-label="Pages des actualités">${page>1?button('Page précédente',newsListUrl(scope,query,page-1),false,'back'):''}<span>Page ${page} sur ${total}</span>${page<total?button('Page suivante',newsListUrl(scope,query,page+1),false,'arrow'):''}</nav>`;
+  }
+  function newsEditionBlock(e){
+    const items=newsItems().filter(n=>n.edition===e.date);
+    return `<section class="news-edition"><div class="section-heading"><h2><a href="#actualites/edition/${esc(e.date)}">Édition du ${dateLabel(e.date)}</a></h2><span class="small muted">${items.length} brève${items.length>1?'s':''}</span></div>${e.note?`<p class="news-edition-note">${esc(e.note)}</p>`:''}${items.length?`<div class="news-grid">${items.map(newsCard).join('')}</div>`:'<p class="notice">Aucune nouvelle brève publiée dans cette édition. Les éditions précédentes restent disponibles.</p>'}</section>`;
+  }
+  function newsEditionPage(date){
+    const editions=newsEditions(),index=editions.findIndex(e=>e.date===date);
+    if(index<0)return notFound();
+    return `${header('Édition du '+dateLabel(date),'Retrouver les nouvelles et les précisions publiées à cette date.','ACTUALITÉ JURIDIQUE',button('Toutes les éditions','#actualites/archives',false,'back'))}${newsEditionBlock(editions[index])}<nav class="news-pagination" aria-label="Naviguer entre les éditions">${editions[index+1]?button('Édition précédente','#actualites/edition/'+editions[index+1].date,false,'back'):''}${editions[index-1]?button('Édition suivante','#actualites/edition/'+editions[index-1].date,false,'arrow'):''}</nav>`;
   }
   function newsPage(route){
     if(route[1]==='article')return newsArticle(route[2]);
-    const filter=route[1]||'all';
-    if(!['all','france','international','archives'].includes(filter))return notFound();
-    const editions=[...newsData.editions].sort((a,b)=>b.date.localeCompare(a.date));
-    const edition=editions[0];
-    const items=newsItems().filter(n=>filter==='france'||filter==='international'?n.scope===filter:filter==='archives'?true:n.edition===edition?.date);
-    const title=filter==='archives'?'Les éditions précédentes.':filter==='france'?'L’actualité juridique en France.':filter==='international'?'Le droit au-delà des frontières.':'Actualité juridique';
-    const nav=`<nav class="filters" aria-label="Filtrer les actualités">${[['all','Dernière édition'],['france','France'],['international','International'],['archives','Toutes les éditions']].map(([id,label])=>`<a class="filter-chip ${id===filter?'active':''}" href="#actualites${id==='all'?'':'/'+id}" ${id===filter?'aria-current="page"':''}>${label}</a>`).join('')}</nav>`;
-    let last='';
-    const list=items.map(n=>{const heading=n.edition!==last?`<h2 class="news-date">Édition du ${dateLabel(n.edition)}</h2>`:'';last=n.edition;return heading+newsCard(n);}).join('');
-    return `${header(title,'Justice, droits et institutions : comprendre les faits et les relier à tes cours.','FRANCE & INTERNATIONAL')}${newsFreshness()}${nav}${filter==='all'&&edition?.note?notice(edition.note):''}<div class="news-archive">${list||empty('Aucune nouvelle brève dans cette sélection.','Les autres éditions restent accessibles. Une absence de publication ne signifie pas qu’il ne s’est rien passé.',button('Toutes les éditions','#actualites/archives',false,'book'))}</div><section class="panel spaced news-editorial"><h2>Comment lire cette rubrique ?</h2><p>Chaque brève distingue les faits rapportés par une source officielle et les explications ajoutées pour apprendre. Une annonce, une décision avec renvoi et un texte entré en vigueur n’ont pas les mêmes effets.</p><p>La sélection vise une brève française et une internationale par jour, lorsqu’une nouveauté fiable est disponible. Les dates des événements, des sources et de la vérification restent visibles. Ces compléments ne remplacent pas le cours ou les consignes du professeur.</p></section>`;
+    if(route[1]==='edition')return newsEditionPage(route[2]);
+    const searching=route[1]==='recherche',scope=searching?(route[3]||'all'):(route[1]||'all');
+    if(!['all','france','international','archives'].includes(scope))return notFound();
+    const query=searching?String(route[2]||'').trim().slice(0,160):'',requested=Number(searching?route[4]||1:route[2]||1);
+    if(!Number.isSafeInteger(requested)||requested<1)return notFound();
+    const editions=newsEditions(),edition=editions[0],term=normalize(query);
+    let items=newsItems().filter(n=>(!['france','international'].includes(scope)||n.scope===scope)&&(!term||normalize([n.title,n.summary,n.institution,n.status,...n.facts,...n.explanation,n.course.text,...(n.glossary||[]).flatMap(g=>[g.term,g.meaning])].join(' ')).includes(term)));
+    if(scope==='all'&&!query)items=items.filter(n=>n.edition===edition?.date);
+    const archive=scope==='archives'&&!query,total=Math.max(1,Math.ceil((archive?editions.length:items.length)/(archive?10:12))),page=Math.min(requested,total);
+    let list='';
+    if(archive)list=editions.slice((page-1)*10,page*10).map(newsEditionBlock).join('');
+    else if(scope==='all'&&!query&&edition)list=newsEditionBlock(edition);
+    else{
+      let last='';list=`<div class="news-archive">${items.slice((page-1)*12,page*12).map(n=>{const heading=n.edition!==last?`<h2 class="news-date"><a href="#actualites/edition/${esc(n.edition)}">Édition du ${dateLabel(n.edition)}</a></h2>`:'';last=n.edition;return heading+newsCard(n);}).join('')}</div>`;
+    }
+    const title=query?'Les actualités qui m’intéressent.':scope==='archives'?'Toutes les éditions.':scope==='france'?'L’actualité juridique en France.':scope==='international'?'Le droit au-delà des frontières.':'Actualité juridique';
+    const caption=query?`${items.length} résultat${items.length>1?'s':''} pour « ${query} » dans les éditions conservées.`:archive?`${editions.length} édition${editions.length>1?'s':''} conservée${editions.length>1?'s':''}, y compris les jours sans nouvelle brève.`:`${items.length} brève${items.length>1?'s':''} dans cette sélection.`;
+    const noResults=!items.length&&!archive&&!(scope==='all'&&!query&&edition);
+    return `${header(title,'Justice, droits et institutions : comprendre les faits et les relier à tes cours.','FRANCE & INTERNATIONAL')}${newsFreshness()}${newsSearch(query,scope)}${newsNav(scope,query)}<p class="count-caption" role="status">${esc(caption)}</p>${noResults?empty(query?'Aucune actualité ne correspond à cette recherche.':'Aucune nouvelle brève dans cette sélection.',query?'Essaie un autre mot ou élargis la zone.':'Les autres éditions restent accessibles.',button('Toutes les éditions','#actualites/archives',false,'book')):list||empty('Aucune édition pour le moment.','La première sélection est en préparation.','')}${newsPagination(page,total,scope,query)}<details class="panel spaced news-editorial"><summary>Comment sont préparées ces actualités ?</summary><p>Les faits sont reformulés à partir de sources officielles et séparés des explications ajoutées pour la L1. Les dates et la portée exacte de chaque texte ou décision restent visibles.</p><p>La sélection vise une brève française et une internationale par jour, quand une nouveauté fiable est disponible. Les archives conservent aussi les éditions sans nouvelle brève. Les questions sont des entraînements ajoutés, sans note universitaire ni évaluation automatique d’un texte libre.</p></details>`;
+  }
+  function newsQuiz(n){
+    const q=n.check;if(!q)return '';
+    const picked=Object.hasOwn(newsAnswers,n.id)?newsAnswers[n.id]:null,answered=picked!==null,correct=picked===q.correct;
+    return `<section class="news-quiz" id="news-check"><span class="eyebrow">M’ENTRAÎNER · QUESTION AJOUTÉE</span><h2>Ai-je compris la décision ?</h2><p>${esc(q.question)}</p><div class="quiz-options">${q.options.map((option,i)=>`<button class="quiz-option ${answered?(i===q.correct?'correct':i===picked?'incorrect':''):''}" data-action="news-answer" data-id="${esc(n.id)}" data-option="${i}" ${answered?'disabled':''}><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="quiz-option-text">${esc(option)}${answered&&(i===q.correct||i===picked)?`<small class="answer-label">${i===q.correct?'Bonne réponse'+(i===picked?' · ton choix':''):'Mauvaise réponse · ton choix'}</small>`:''}</span></button>`).join('')}</div>${answered?`<div class="quiz-feedback ${correct?'correct':'incorrect'}" role="status"><strong>${correct?'Bonne réponse.':'À reprendre.'}</strong><p>${esc(q.explanation)}</p></div><button class="btn" data-action="news-retry" data-id="${esc(n.id)}">${icon('refresh')}Réessayer</button>`:'<p class="small muted">Choisis une réponse pour afficher la correction et son explication.</p>'}<p class="small muted">Cet essai reste temporaire dans la page. Il ne modifie pas ta progression.</p></section>`;
+  }
+  function handleNewsAction(action,id,target){
+    if(!['news-answer','news-retry'].includes(action))return false;
+    const n=newsData.items.find(n=>n.id===id);if(!n?.check)return true;
+    if(action==='news-retry')delete newsAnswers[id];
+    else{
+      const choice=Number(target.dataset.option);
+      if(Object.hasOwn(newsAnswers,id)||!Number.isInteger(choice)||choice<0||choice>=n.check.options.length)return true;
+      newsAnswers[id]=choice;
+    }
+    render(false);return true;
   }
   function newsArticle(id){
-    const n=newsData.items.find(x=>x.id===id);
-    if(!n)return notFound();
-    const course=chapterById[n.course.chapter];
-    return `${header(n.title,n.summary,newsScope(n.scope).toUpperCase()+' · ÉDITION DU '+dateLabel(n.edition).toUpperCase(),button('Toutes les actualités','#actualites',false,'back'))}<div class="news-article-meta"><span class="pill">${esc(n.institution)}</span><span class="pill">${esc(n.status)}</span><p>Événement : <time datetime="${esc(n.eventDate)}">${dateLabel(n.eventDate)}</time> · ${n.sourcePublished?'Source publiée le '+dateLabel(n.sourcePublished):'Date de mise en ligne non établie'} · Vérifié le ${dateLabel(n.checked)}</p></div><article class="reader news-article"><div class="reader-body"><section><span class="eyebrow">FAITS · SYNTHÈSE DE LA SOURCE OFFICIELLE</span><h2>Ce qui s’est passé</h2>${n.facts.map(t=>`<p>${esc(t)}</p>`).join('')}</section><section><span class="eyebrow">EXPLICATION AJOUTÉE</span><h2>Ce que cela change — et ce qui reste ouvert</h2>${n.explanation.map(t=>`<p>${esc(t)}</p>`).join('')}</section><section class="news-course"><span class="eyebrow">FAIRE LE LIEN AVEC LA L1</span><h2>${esc(n.course.label)}</h2><p>${esc(n.course.text)}</p>${course?button('Revoir le chapitre','#chapter/'+course.id+'/cours',false,'book'):button('Revoir la matière','#subject/'+n.subject,false,'book')}</section><section class="news-recall"><h2>Une question pour retenir</h2><p>${esc(n.recall.question)}</p><details><summary>Voir l’explication après ma réponse</summary><p>${esc(n.recall.answer)}</p></details></section><section class="news-sources"><h2>Lire les sources</h2><ul>${n.sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('external')}${esc(s.label)}</a></li>`).join('')}</ul><p class="small muted">Reformulation pédagogique originale. Les sources restent la référence pour la teneur exacte et la portée de la décision.</p></section>${n.corrections?.length?`<section><h2>Précisions apportées après publication</h2>${n.corrections.map(c=>`<p>${dateLabel(c.date)} : ${esc(c.text)}</p>`).join('')}</section>`:''}</div></article><div class="page-actions spaced">${button('Autres nouvelles de '+(n.scope==='france'?'France':'l’international'),'#actualites/'+n.scope,false,'globe')}${button('Toutes les éditions','#actualites/archives',false,'book')}</div>`;
+    const n=newsData.items.find(x=>x.id===id);if(!n)return notFound();
+    const course=chapterById[n.course.chapter],glossary=n.glossary||[];
+    const jumps=[['news-facts','Comprendre'],...(glossary.length?[['news-vocabulary','Vocabulaire']]:[]),['news-practice','M’entraîner'],['news-sources','Sources']];
+    return `${header(n.title,n.summary,newsScope(n.scope).toUpperCase()+' · ÉDITION DU '+dateLabel(n.edition).toUpperCase(),button('Mon édition','#actualites/edition/'+n.edition,false,'back'))}<div class="news-article-meta"><span class="pill">${esc(n.institution)}</span><span class="pill">${esc(n.status)}</span><span class="pill">${newsMinutes(n)} min · lecture et rappel</span><p>Événement : <time datetime="${esc(n.eventDate)}">${dateLabel(n.eventDate)}</time> · ${n.sourcePublished?'Source publiée le '+dateLabel(n.sourcePublished):'Date de mise en ligne non établie'} · Vérifié le ${dateLabel(n.checked)}</p></div><nav class="filters news-reading-nav" aria-label="Dans cette actualité">${jumps.map(([id,label])=>`<a class="filter-chip" href="#${id}" data-scroll="${id}">${label}</a>`).join('')}</nav><article class="reader news-article"><div class="reader-body"><section id="news-facts"><span class="eyebrow">FAITS · SYNTHÈSE DE LA SOURCE OFFICIELLE</span><h2>Ce qui s’est passé</h2>${n.facts.map(t=>`<p>${esc(t)}</p>`).join('')}</section><section><span class="eyebrow">EXPLICATION AJOUTÉE</span><h2>La portée de cette actualité</h2>${n.explanation.map(t=>`<p>${esc(t)}</p>`).join('')}</section>${glossary.length?`<section id="news-vocabulary" class="news-vocabulary"><span class="eyebrow">VOCABULAIRE · EXPLICATIONS AJOUTÉES</span><h2>Les mots à comprendre</h2><dl>${glossary.map(g=>`<dt>${esc(g.term)}</dt><dd>${esc(g.meaning)}</dd>`).join('')}</dl></section>`:''}<section class="news-course"><span class="eyebrow">FAIRE LE LIEN AVEC LA L1</span><h2>${esc(n.course.label)}</h2><p>${esc(n.course.text)}</p>${course?button('Revoir le chapitre','#chapter/'+course.id+'/cours',false,'book'):button('Revoir la matière','#subject/'+n.subject,false,'book')}</section><section id="news-practice"><h2>Passer de la lecture à une réponse</h2><p class="news-instruction">Explique d’abord à voix haute ce qui a été décidé et ce qui reste ouvert. Essaie ensuite les questions avant de lire les corrections.</p>${newsQuiz(n)}<section class="news-recall"><h3>Une question pour retenir</h3><p>${esc(n.recall.question)}</p><details><summary>Voir l’explication après ma réponse</summary><p>${esc(n.recall.answer)}</p></details></section></section><section class="news-sources" id="news-sources"><h2>Lire les sources</h2><ul>${n.sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${icon('external')}${esc(s.label)}</a></li>`).join('')}</ul><p class="small muted">Reformulation pédagogique originale. Les sources restent la référence pour la teneur exacte et la portée de la décision.</p></section>${n.corrections?.length?`<section><h2>Précisions apportées après publication</h2>${n.corrections.map(c=>`<p>${dateLabel(c.date)} : ${esc(c.text)}</p>`).join('')}</section>`:''}</div></article><div class="page-actions spaced">${button('Toutes les actualités','#actualites',false,'back')}${button('Autres nouvelles de '+(n.scope==='france'?'France':'l’international'),'#actualites/'+n.scope,false,'globe')}${button('Toutes les éditions','#actualites/archives',false,'book')}</div>`;
   }
+  document.addEventListener('submit',event=>{
+    if(event.target.id!=='news-search-form')return;
+    event.preventDefault();
+    const query=String(event.target.elements.q.value).trim().slice(0,160),value=event.target.elements.scope.value,scope=['france','international'].includes(value)?value:'all';
+    location.hash=newsListUrl(scope,query);
+  });
 
   // END NEWS UI
   function home() {
@@ -438,7 +496,7 @@
     }
     if(kind==='all'||kind==='supports'){
       const added=[
-        ...newsItems().map(n=>({subject:n.subject,label:'Actualité juridique · '+dateLabel(n.edition),title:n.title,text:[n.summary,...n.facts,...n.explanation,n.course.text].join(' '),url:'#actualites/article/'+n.id})),
+        ...newsItems().map(n=>({subject:n.subject,label:'Actualité juridique · '+dateLabel(n.edition),title:n.title,text:[n.summary,...n.facts,...n.explanation,n.course.text,...(n.glossary||[]).flatMap(g=>[g.term,g.meaning])].join(' '),url:'#actualites/article/'+n.id})),
         ...(E.receivedRecap?.sections||[]).map(s=>({subject:'prive',label:'Récapitulatif reçu : explication ajoutée',title:s.title,text:s.text,url:'#examens/recapitulatif'})),
         ...T.sessions.filter(s=>s.annexReview).flatMap(s=>s.annexReview.sections.map(p=>({subject:s.subject,label:'Lecture des annexes ajoutée',title:p.title,text:p.text+' '+p.practice.question+' '+p.practice.answer,url:'#td/seance/'+s.id}))),
         ...T.sessions.filter(s=>s.peerReview).flatMap(s=>s.peerReview.sections.map(p=>({subject:s.subject,label:'Correction complémentaire relue ajoutée',title:p.title,text:p.text,url:'#td/seance/'+s.id}))),
@@ -1177,6 +1235,7 @@
     const target=event.target.closest('[data-action]');
     if(!target){if(event.target.closest('a[href^="#"]')&&!event.target.closest('#sidebar'))document.body.classList.remove('menu-open');return;}
     const id=target.dataset.id;
+    if(handleNewsAction(target.dataset.action,id,target))return;
     if(handlePathAction(target.dataset.action,id,target))return;
     if(handleControlAction(target.dataset.action,id,target))return;
     if(handleLearningAction(target.dataset.action,id,target))return;
