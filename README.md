@@ -1,5 +1,13 @@
 # L’Atelier du droit
 
+## Actualité juridique · 18 octobre 2026
+
+La rubrique « Actualité juridique » propose une sélection quotidienne française et internationale, des archives et un accès depuis l’accueil et la recherche. Chaque brève précise les dates de l’événement, de la publication lorsqu’elle est établie et de la vérification. Elle sépare les faits sourcés des explications ajoutées, indique le statut de la décision ou du texte et propose un lien avec les cours de L1 et une question de rappel dont la réponse reste fermée.
+
+La première édition traite d’un arrêt de cassation avec renvoi du 14 octobre 2026 et d’une demande d’avis consultatif acceptée par la CEDH le même jour, annoncée le 15. Les dates distinctes et les limites sont précisées. Les jours sans nouvelle information suffisamment vérifiée peuvent comporter une note sans nouvelle brève ; les anciennes éditions restent accessibles. Le site affiche la dernière date de vérification et ne présente pas automatiquement une ancienne édition comme celle du jour.
+
+Le flux public `actualites.js` est généré à partir de `content/actualites.json`. Le suivi quotidien dans la conversation prépare et publie les éditions ; la page statique ne lance pas une recherche en arrière-plan. Les instructions de maintien à jour sont conservées localement dans `tools/actualites-quotidiennes.md`. Les cours, fiches, quiz, cartes et données de progression restent séparés.
+
 ## Relecture des nouveaux parcours · 15 octobre 2026
 
 Les 38 parcours ont été relus intégralement : 114 objectifs, les explications, 38 modèles commentés, 152 questions et leurs 152 variantes, avec leurs réponses, indices et critères de comparaison. Les neuf exercices de reprise d’erreurs ont également été relus. Les points sensibles sont confrontés aux textes officiels actuels et aux sources historiques et universitaires identifiées ; les références contrôlées et les précisions utiles se trouvent dans « Sources et périmètre du parcours ».
