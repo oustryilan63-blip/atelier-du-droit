@@ -167,3 +167,12 @@ La préparation du blanc public du 22 octobre cible les trois thèmes confirmés
 Les 21 schémas et les 104 repères des quatre matières ont été relus, ainsi que les 12 étapes de la frise Perruche des TD. Les précisions concernent notamment la confédération, la QPC, les effets des arrêts, l’acte constitutif des OI, la responsabilité de protéger, la CPI et les textes historiques. Les liens vers les chapitres et les passages ont été contrôlés. Chaque support donne accès à la date de relecture, aux précisions et aux références de vérification. Les années approximatives ou discutées conservent leur réserve ; une frise de repères n’est pas une échelle proportionnelle.
 
 Les identifiants existants et les documents originaux sont conservés. Les cours, fiches, réponses de quiz, cartes et données personnelles de progression ne sont pas modifiés par cette mise à jour. Les corrections sont des ajouts pédagogiques distincts d’une validation du professeur.
+
+
+## Méthodologie et corrigés relus — 21 octobre 2026
+
+La relecture couvre les quatre matières : 11 guides, 26 ateliers, les 38 parcours et leurs 304 réponses initiales ou variantes, six modèles rédigés, treize séances de TD et les préparations d’épreuves. L’inventaire de 151 objets comprend aussi les profils, aides et ensembles de rappels ; il ne désigne pas 151 exercices.
+
+Les corrections concernent notamment la règle territoriale spéciale applicable au domaine public, la distinction entre contentieux des décisions et des contrats administratifs, les domiciles omis dans la reformulation d’un cas pénal et leurs rattachements alternatifs. Trois corrigés de droit public sont complétés par une introduction rédigée. Des précisions harmonisent la force de loi du Digeste, les mesures conservatoires de la CIJ, l’adoption d’un texte et l’usage des seuls faits donnés. Les dates de relecture, les raisons et les références apparaissent dans les supports concernés. Les versions précédentes des parcours restent conservées dans l’historique de relecture.
+
+Les exemples et solutions restent pédagogiques, distincts des consignes et corrigés officiels. Les documents reçus, quiz, cartes, schémas, frises, échéances confirmées et identifiants sont conservés. La relecture ne constitue pas une garantie absolue d’absence d’erreur. Les réponses et les informations de vérification sont fermées au départ ; les aides restent absentes pendant une simulation en cours. La progression personnelle n’est pas modifiée.
