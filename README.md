@@ -1,5 +1,11 @@
 # L’Atelier du droit
 
+## Auteurs, articles et approfondissements relus — 21 octobre 2026
+
+La relecture couvre 36 notices d’auteurs, 13 lectures d’articles officiels, 23 approfondissements dont 15 mini-fiches avec exercices, et 11 décisions ou repères. Les 15 micro-exercices ont été résolus à nouveau. Quatorze modifications de champs précisent onze supports : Bodin, Wilson, Thibierge, révision constitutionnelle, filtres et effets de la QPC, compilations de Justinien, lecture des arrêts, Simmenthal, Quintin et Fraisse. Ces modifications sont des précisions et compléments ; elles ne correspondent pas à quatorze erreurs de fond.
+
+Chaque support donne accès à sa relecture datée, aux précisions et aux références ciblées. Les 45 notices bibliographiques sont comparées au PDF officiel reçu, sans affirmer avoir lu tous les ouvrages ni vérifié la disponibilité actuelle des exemplaires. Les années des notices ne sont pas automatiquement les dates de fondation des revues ou les dernières éditions. Les originaux, anciennes dates, identifiants, quiz, cartes, cours, fiches, schémas, frises et données personnelles de progression restent conservés. Les réponses des approfondissements sont fermées avant comparaison. Cette relecture pédagogique ne vaut pas certification du professeur.
+
 ## Cours et fiches relus · 21 octobre 2026
 
 Les dix documents de cours et fiches disponibles ont été lus et comparés dans les quatre matières : 5 321 paragraphes, annexes comprises, et 38 chapitres. La relecture ajoute 99 notes et complète cinq annotations existantes en conservant leur identité et leur historique. Les 217 notes recensent des corrections, actualisations, précisions et compléments ; elles ne sont pas toutes des erreurs de fond.
