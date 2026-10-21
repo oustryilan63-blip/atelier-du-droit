@@ -1,3 +1,5 @@
+Dernier tour du site — 21 octobre 2026 : les réserves et cas particuliers déjà relus sont désormais affichés dans les onze branches du guide des juridictions. Le programme du jour sélectionne les exercices du dossier de l’épreuve annoncée et donne accès aux TD reçus correspondants. Un programme déjà commencé et les progrès existants sont conservés. Le contrôle du 20 octobre devient un entraînement conservé lorsque sa date est passée ; les dates confirmées restent inchangées. Cette passe vérifie navigation et cohérence après les relectures de fond précédentes, sans annoncer une nouvelle lecture intégrale de tous les CM.
+
 # L’Atelier du droit
 
 ## Auteurs, articles et approfondissements relus — 21 octobre 2026
