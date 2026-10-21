@@ -1,5 +1,11 @@
 # L’Atelier du droit
 
+## Réviser avec l’actualité · 21 octobre 2026
+
+La rubrique propose un parcours de rappel actif par matière, limité à trois brèves récentes par séance, et un accès à chaque exemple séparément. La question apparaît sans les faits ni la correction ; après une réponse écrite ou orale, la comparaison explique l’institution, la portée et la notion du cours. Une reformulation peut se faire avec le modèle à nouveau caché. Le bilan permet de reprendre les seuls points déclarés À revoir ; aucune maîtrise ni note n’est déduite automatiquement.
+
+Les sept brèves existantes possèdent une notion de cours, une idée à retenir, une confusion à éviter et un exemple de formulation à adapter au sujet. Ces ajouts pédagogiques restent distincts du CM et des consignes d’examen. Leurs dates de relecture ne modifient pas les dates des événements ou des anciennes vérifications. Les archives et QCM sont conservés. La séance, les réponses et le bilan restent en mémoire dans l’onglet jusqu’au rechargement ; ils ne sont pas enregistrés dans la progression, ni exportés.
+
 ## Actualité juridique · 18 octobre 2026
 
 La rubrique comporte une recherche dans les éditions avec filtre France/international, des liens permanents par date et une pagination des archives. Les éditions sans nouvelle brève restent visibles avec leur note de vérification. Chaque brève propose une estimation de lecture, des raccourcis vers les explications, le vocabulaire, les entraînements et les sources. Les deux premières brèves disposent de quatre termes expliqués et de deux mini-QCM relus, avec réponse correcte en vert, choix erroné en rouge et explication. Les essais restent temporaires et ne modifient pas la progression générale.
