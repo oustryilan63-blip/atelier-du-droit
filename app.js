@@ -195,6 +195,21 @@
     const review=item.contentReview;if(!review)return '';
     return `<details class="content-review"><summary>Relu le ${esc(dateLabel(review.date))} · sources de vérification</summary><p class="small muted">Réponse et explication relues à partir des supports reçus et des références ci-dessous. Cette relecture ajoutée reste distincte d’un corrigé officiel du professeur.</p><div class="guide-sources">${(review.sources||[]).map(s=>sourceLink(s)).join('')||sourceLink(item.source,'Passage du support vérifié')}</div></details>`;
   }
+  function visualItemReview(item) {
+    const review=item.contentReview;if(review?.type!=='visual')return '';
+    return `<details class="content-review visual-item-review"><summary>Relu le ${esc(dateLabel(review.date))} · précisions et sources</summary>${review.changes?.length?`<ul>${review.changes.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`:'<p>Dates, explications et renvois relus ; formulation conservée.</p>'}<div class="guide-sources">${review.sources.map(s=>sourceLink(s)).join('')}</div></details>`;
+  }
+  function visualReviewOverview(selected='all') {
+    const r=D.visualReview;if(!r)return '';
+    const items=r.subjects.filter(s=>selected==='all'||s.subject===selected);
+    return `<aside class="visual-review"><details class="panel"><summary>Relecture du ${esc(dateLabel(r.date))} · dates, explications et liens</summary><div class="audit-subjects">${items.map(s=>`<div><strong>${esc(subjectName(s.subject))}</strong><span>${s.schemes} schémas · ${s.timelines} repères chronologiques</span></div>`).join('')}</div><p class="small">Les précisions et leurs sources sont accessibles sous chaque support.${selected==='all'||selected==='prive'?' La frise Perruche des TD a aussi été relue (12 étapes).':''}</p><p class="small">${esc(r.scope)}</p><p class="small">${esc(r.limits)}</p></details></aside>`;
+  }
+  function timelineCompare(a,b) {
+    if(a.year!==b.year)return a.year-b.year;
+    const months=['janv','févr','mars','avr','mai','juin','juill','août','sept','oct','nov','déc'];
+    const key=t=>{const m=t.date.toLocaleLowerCase('fr-FR').match(/^(\d{1,2})(?:er)?\s+([\p{L}.]+)/u);if(!m)return 0;const month=months.findIndex(x=>m[2].startsWith(x));return month<0?0:(month+1)*100+Number(m[1]);};
+    return key(a)-key(b)||a.date.localeCompare(b.date,'fr');
+  }
   function button(label, href, primary=false, symbol='arrow') {
     return `<a class="btn ${primary?'primary':''}" href="${esc(href)}">${esc(label)}${icon(symbol)}</a>`;
   }
@@ -486,12 +501,12 @@
   }
   function timelinePage(selected='all') {
     if(!subjects[selected])selected='all';
-    const items=D.timelines.filter(t=>selected==='all'||t.subject===selected).sort((a,b)=>a.year-b.year||a.date.localeCompare(b.date));
-    return `${header('Situer les notions dans le temps.','Les repères historiques et les décisions recensés dans tes fiches, avec un accès au passage source.','FRISES CHRONOLOGIQUES')}${filters('timeline',selected)}<p class="count-caption">${items.length} repères · Repères issus des fiches de révision</p><div class="timeline">${items.map(t=>`<article class="timeline-item ${subjects[t.subject].color}"><div class="timeline-date">${esc(t.date)}</div><span class="timeline-dot" aria-hidden="true"></span><div class="timeline-content"><span class="pill">${esc(subjectName(t.subject))}</span><p>${esc(readingRevisions.get(t.source?.doc+":"+t.source?.index)?.text.replace(/^[^—]+—\s*/,"")||t.text)}</p>${sourceLink(t.source)}</div></article>`).join('')}</div>`;
+    const items=D.timelines.filter(t=>selected==='all'||t.subject===selected).sort(timelineCompare);
+    return `${header('Situer les notions dans le temps.','Les repères historiques et les décisions recensés dans tes fiches, avec un accès au passage source.','FRISES CHRONOLOGIQUES')}${filters('timeline',selected)}${visualReviewOverview(selected)}<p class="count-caption">${items.length} repères · Frise sans échelle proportionnelle. Une année seule ne précise pas l’ordre des événements de cette même année ; les périodes sont classées par leur début.</p><div class="timeline">${items.map(t=>`<article class="timeline-item ${subjects[t.subject].color}"><div class="timeline-date">${esc(t.date)}</div><span class="timeline-dot" aria-hidden="true"></span><div class="timeline-content"><span class="pill">${esc(subjectName(t.subject))}</span><p>${esc(t.text)}</p>${sourceLink(t.source)}${visualItemReview(t)}</div></article>`).join('')}</div>`;
   }
   function schemesPage(selected='all') {
     if(!subjects[selected])selected='all';
-    return `${header('Voir les liens entre les idées.','Des schémas pour organiser ce que tu apprends. Chaque schéma indique son passage de fiche ou sa source officielle.','SCHÉMAS DE RÉVISION')}${filters('schemes',selected)}${D.schemes.filter(s=>selected==='all'||s.subject===selected).map(s=>`<article class="scheme ${subjects[s.subject].color}"><span class="eyebrow">${esc(subjectName(s.subject))} · Support ajouté</span><h2>${esc(s.title)}</h2><div class="center-node">${esc(s.center)}</div><div class="scheme-line"></div><div class="scheme-nodes" data-count="${s.nodes.length}">${s.nodes.map(n=>`<div class="scheme-node"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p></div>`).join('')}</div><div class="scheme-caption"><span>${esc(s.caption)}</span>${sourceLink(s.source)}${s.secondarySource?sourceLink(s.secondarySource,'CPI dans la fiche'):''}</div></article>`).join('')}`;
+    return `${header('Voir les liens entre les idées.','Des schémas pour organiser ce que tu apprends. Chaque schéma indique son passage de fiche ou sa source officielle.','SCHÉMAS DE RÉVISION')}${filters('schemes',selected)}${visualReviewOverview(selected)}${D.schemes.filter(s=>selected==='all'||s.subject===selected).map(s=>`<article class="scheme ${subjects[s.subject].color}"><span class="eyebrow">${esc(subjectName(s.subject))} · Support ajouté</span><h2>${esc(s.title)}</h2><div class="center-node">${esc(s.center)}</div><div class="scheme-line"></div><div class="scheme-nodes" data-count="${s.nodes.length}">${s.nodes.map(n=>`<div class="scheme-node"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p></div>`).join('')}</div><div class="scheme-caption"><span>${esc(s.caption)}</span>${sourceLink(s.source)}${s.secondarySource?sourceLink(s.secondarySource,'CPI dans la fiche'):''}</div><div class="page-actions spaced">${button('Retrouver le chapitre',`#chapter/${s.chapter}/plus`,false,'book')}</div>${visualItemReview(s)}</article>`).join('')}`;
   }
   function referencesPage(selected='all',tab='authors',category='all') {
     if(!subjects[selected])selected='all';
@@ -553,7 +568,7 @@
     if(!subjects[selected])selected='all';
     const notes=readingNotes.filter(n=>selected==='all'||n.subject===selected);
     const coverage=(D.audit?.subjects||[]).filter(s=>selected==='all'||s.subject===selected);
-    return `${header('Apprendre avec les bonnes distinctions.','Les erreurs de transcription, dates et formulations à nuancer repérées lors de la relecture. Chaque note est reliée au passage concerné et à sa référence.','CORRECTIONS & PRÉCISIONS')}${filters('corrections',selected)}${courseReviewOverview(selected)}<details class="panel spaced"><summary>Les vérifications précédentes</summary><p>Les cours, fiches, exercices et renvois ont aussi fait l’objet de vérifications antérieures. Les notes restent datées ; cette relecture ne constitue pas une validation du professeur.</p><div class="audit-subjects">${coverage.map(s=>`<div><strong>${esc(subjectName(s.subject))}</strong><span>${esc(s.scope)}</span></div>`).join('')}</div></details><p class="count-caption">${notes.length} correction${notes.length>1?'s':''}, précision${notes.length>1?'s':''} ou complément${notes.length>1?'s':''} dans cette sélection</p>${notes.length?`<div class="reference-grid">${notes.map(n=>readingNote(n)).join('')}</div>`:notice('Aucun point supplémentaire n’est signalé dans cette sélection. Les limites du cours reçu sont indiquées ci-dessus.')}`;
+    return `${header('Apprendre avec les bonnes distinctions.','Les erreurs de transcription, dates et formulations à nuancer repérées lors de la relecture. Chaque note est reliée au passage concerné et à sa référence.','CORRECTIONS & PRÉCISIONS')}${filters('corrections',selected)}${courseReviewOverview(selected)}${visualReviewOverview(selected)}<details class="panel spaced"><summary>Les vérifications précédentes</summary><p>Les cours, fiches, exercices et renvois ont aussi fait l’objet de vérifications antérieures. Les notes restent datées ; cette relecture ne constitue pas une validation du professeur.</p><div class="audit-subjects">${coverage.map(s=>`<div><strong>${esc(subjectName(s.subject))}</strong><span>${esc(s.scope)}</span></div>`).join('')}</div></details><p class="count-caption">${notes.length} correction${notes.length>1?'s':''}, précision${notes.length>1?'s':''} ou complément${notes.length>1?'s':''} dans cette sélection</p>${notes.length?`<div class="reference-grid">${notes.map(n=>readingNote(n)).join('')}</div>`:notice('Aucun point supplémentaire n’est signalé dans cette sélection. Les limites du cours reçu sont indiquées ci-dessus.')}`;
   }
   function courseReviewOverview(selected='all') {
     const review=D.courseFicheReview;if(!review)return '';
@@ -784,7 +799,7 @@
   }
 
   function tdChronology(s) {
-    return `<section id="td-chronology" class="spaced"><div class="section-heading"><h2>${esc(s.chronologyTitle||'Les repères chronologiques')}</h2><span class="pill">Repères sourcés</span></div><article class="reader"><div class="reader-body td-prose"><ol class="td-chronology">${s.chronology.map(item=>`<li><h3>${item.date.length===10?dateLabel(item.date):esc(item.date)}</h3><p>${esc(item.text)}</p><div class="guide-sources">${(item.links||[]).map(methodLink).join('')}</div></li>`).join('')}</ol></div></article></section>`;
+    return `<section id="td-chronology" class="spaced"><div class="section-heading"><h2>${esc(s.chronologyTitle||'Les repères chronologiques')}</h2><span class="pill">Repères sourcés</span></div><article class="reader"><div class="reader-body td-prose"><ol class="td-chronology">${s.chronology.map(item=>`<li><h3>${item.date.length===10?dateLabel(item.date):esc(item.date)}</h3><p>${esc(item.text)}</p><div class="guide-sources">${(item.links||[]).map(methodLink).join('')}</div>${visualItemReview(item)}</li>`).join('')}</ol></div></article></section>`;
   }
   function tdSessionPage(id) {
     const s=tdSessions[id];if(!s)return notFound();

@@ -179,3 +179,6 @@
 .revision-explanation .reading-correction{margin-top:.8rem}
 .revised-reading>p{white-space:pre-line}
 @media print{.reading-version-label{font-size:9pt}.revised-reading{background:none;border-left:1px solid #777}.revision-explanation:not([open]),.revised-reading .source-original:not([open]){display:none}}
+
+.visual-review{margin:20px 0}.visual-review summary{cursor:pointer;font-size:13px;font-weight:600;color:#405b4b}.visual-review .audit-subjects{margin-top:18px}.scheme-nodes[data-count="4"]{grid-template-columns:repeat(2,minmax(0,1fr))}.visual-item-review li{margin-bottom:8px}.scheme-caption{flex-wrap:wrap;overflow-wrap:anywhere}
+@media(max-width:620px){.scheme-nodes{grid-template-columns:1fr!important;gap:12px}.scheme-node{padding:16px}.scheme-node h3{font-size:13px}.scheme-node p{font-size:12px}.visual-review .panel{padding:16px}.visual-review summary{font-size:12px}}

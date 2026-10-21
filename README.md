@@ -160,3 +160,10 @@ Les notes de camarade reçues le 15 octobre 2026 sont intégrées sous forme de 
 Le TD5 privé transmis est relu avec les textes et décisions : quatorze explications, une frise de douze étapes sur Perruche et ses suites, et deux ateliers corrigés. Les questions originales et le corrigé officiel restent non reçus ; le fichier personnel et ses métadonnées ne sont pas publiés. Le TD4 privé reste distinct et manquant. Le second fichier TD4 public reçu contient exactement le même texte que celui déjà intégré, sans doublon.
 
 La préparation du blanc public du 22 octobre cible les trois thèmes confirmés par l’étudiant le 16 octobre : légalité et légitimité, souveraineté, État-nation (TD2, TD3 et TD4). Le format et le sujet exacts restent à confirmer. Le programme du contrôle privé de compétence du 20 octobre est conservé.
+
+
+## Relecture des schémas et des frises — 21 octobre 2026
+
+Les 21 schémas et les 104 repères des quatre matières ont été relus, ainsi que les 12 étapes de la frise Perruche des TD. Les précisions concernent notamment la confédération, la QPC, les effets des arrêts, l’acte constitutif des OI, la responsabilité de protéger, la CPI et les textes historiques. Les liens vers les chapitres et les passages ont été contrôlés. Chaque support donne accès à la date de relecture, aux précisions et aux références de vérification. Les années approximatives ou discutées conservent leur réserve ; une frise de repères n’est pas une échelle proportionnelle.
+
+Les identifiants existants et les documents originaux sont conservés. Les cours, fiches, réponses de quiz, cartes et données personnelles de progression ne sont pas modifiés par cette mise à jour. Les corrections sont des ajouts pédagogiques distincts d’une validation du professeur.
