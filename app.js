@@ -29,6 +29,7 @@
   const chapterById = Object.fromEntries(D.chapters.map(c => [c.id, c]));
   const main = document.getElementById('main');
   const readingNotes = D.readingNotes || [];
+  const readingRevisions = new Map((D.readingRevisions||[]).map(r=>[r.doc+':'+r.index,r]));
   const notesByPassage = new Map();
   for(const note of readingNotes) for(const target of note.targets){
     const key=target.doc+':'+target.index;
@@ -412,6 +413,12 @@
   }
   function accompaniedParagraph(doc,p,highlight=false) {
     const notes=passageNotes(doc.id,p.index);
+    const revision=readingRevisions.get(doc.id+':'+p.index);
+    if(revision){
+      const original=paragraph(p,false).replace(`id="p-${p.index}"`,'');
+      const revised=paragraph({...p,text:revision.text},false).replace(`id="p-${p.index}"`,'');
+      return `<section id="p-${p.index}" class="accompanied-passage revised-reading ${highlight?'spotlight':''}"><span class="reading-version-label">Lecture corrigée · ${dateLabel(revision.checked)}</span>${revised}<details class="revision-explanation"><summary>Comprendre la correction et voir les sources</summary>${notes.map(n=>readingNote(n,true)).join('')}</details><details class="source-original"><summary>Comparer avec le passage original</summary><p class="small muted">Texte reçu conservé. La lecture corrigée ci-dessus intègre les changements expliqués et sourcés.</p>${original}</details></section>`;
+    }
     const corrected=notes.some(n=>['Correction','Mise à jour'].includes(n.kind));
     if(!corrected)return paragraph(p,highlight)+notes.map(n=>readingNote(n,true)).join('');
     const original=paragraph(p,false).replace(`id="p-${p.index}"`,'');
@@ -480,7 +487,7 @@
   function timelinePage(selected='all') {
     if(!subjects[selected])selected='all';
     const items=D.timelines.filter(t=>selected==='all'||t.subject===selected).sort((a,b)=>a.year-b.year||a.date.localeCompare(b.date));
-    return `${header('Situer les notions dans le temps.','Les repères historiques et les décisions recensés dans tes fiches, avec un accès au passage source.','FRISES CHRONOLOGIQUES')}${filters('timeline',selected)}<p class="count-caption">${items.length} repères · Repères issus des fiches de révision</p><div class="timeline">${items.map(t=>`<article class="timeline-item ${subjects[t.subject].color}"><div class="timeline-date">${esc(t.date)}</div><span class="timeline-dot" aria-hidden="true"></span><div class="timeline-content"><span class="pill">${esc(subjectName(t.subject))}</span><p>${esc(t.text)}</p>${sourceLink(t.source)}</div></article>`).join('')}</div>`;
+    return `${header('Situer les notions dans le temps.','Les repères historiques et les décisions recensés dans tes fiches, avec un accès au passage source.','FRISES CHRONOLOGIQUES')}${filters('timeline',selected)}<p class="count-caption">${items.length} repères · Repères issus des fiches de révision</p><div class="timeline">${items.map(t=>`<article class="timeline-item ${subjects[t.subject].color}"><div class="timeline-date">${esc(t.date)}</div><span class="timeline-dot" aria-hidden="true"></span><div class="timeline-content"><span class="pill">${esc(subjectName(t.subject))}</span><p>${esc(readingRevisions.get(t.source?.doc+":"+t.source?.index)?.text.replace(/^[^—]+—\s*/,"")||t.text)}</p>${sourceLink(t.source)}</div></article>`).join('')}</div>`;
   }
   function schemesPage(selected='all') {
     if(!subjects[selected])selected='all';
@@ -546,7 +553,12 @@
     if(!subjects[selected])selected='all';
     const notes=readingNotes.filter(n=>selected==='all'||n.subject===selected);
     const coverage=(D.audit?.subjects||[]).filter(s=>selected==='all'||s.subject===selected);
-    return `${header('Apprendre avec les bonnes distinctions.','Les erreurs de transcription, dates et formulations à nuancer repérées lors de la relecture. Chaque note est reliée au passage concerné et à une source officielle.','CORRECTIONS & PRÉCISIONS')}${filters('corrections',selected)}<section class="panel audit-overview"><h2>Ce qui a été revu</h2><p>Les quatre matières ont été comparées aux documents transmis : texte des cours et fiches, découpage des chapitres, cartes, quiz, schémas, frises et renvois de sources. Les points ci-dessous ont fait l’objet d’une vérification ciblée ; cette relecture ne constitue pas une validation intégrale par le professeur.</p><div class="audit-subjects">${coverage.map(s=>`<div><strong>${esc(subjectName(s.subject))}</strong><span>${esc(s.scope)}</span></div>`).join('')}</div><p class="small">Les originaux restent inchangés. Les corrections et actualisations ajoutées sont affichées en priorité pendant la lecture ; le passage original concerné se déplie. Dernière relecture : ${dateLabel(D.updated)}.</p></section><p class="count-caption">${notes.length} correction${notes.length>1?'s':''} ou précision${notes.length>1?'s':''} dans cette sélection</p>${notes.length?`<div class="reference-grid">${notes.map(n=>readingNote(n)).join('')}</div>`:notice('Aucun point supplémentaire n’est signalé dans cette sélection. Les limites du cours reçu sont indiquées ci-dessus.')}`;
+    return `${header('Apprendre avec les bonnes distinctions.','Les erreurs de transcription, dates et formulations à nuancer repérées lors de la relecture. Chaque note est reliée au passage concerné et à sa référence.','CORRECTIONS & PRÉCISIONS')}${filters('corrections',selected)}${courseReviewOverview(selected)}<details class="panel spaced"><summary>Les vérifications précédentes</summary><p>Les cours, fiches, exercices et renvois ont aussi fait l’objet de vérifications antérieures. Les notes restent datées ; cette relecture ne constitue pas une validation du professeur.</p><div class="audit-subjects">${coverage.map(s=>`<div><strong>${esc(subjectName(s.subject))}</strong><span>${esc(s.scope)}</span></div>`).join('')}</div></details><p class="count-caption">${notes.length} correction${notes.length>1?'s':''}, précision${notes.length>1?'s':''} ou complément${notes.length>1?'s':''} dans cette sélection</p>${notes.length?`<div class="reference-grid">${notes.map(n=>readingNote(n)).join('')}</div>`:notice('Aucun point supplémentaire n’est signalé dans cette sélection. Les limites du cours reçu sont indiquées ci-dessus.')}`;
+  }
+  function courseReviewOverview(selected='all') {
+    const review=D.courseFicheReview;if(!review)return '';
+    const scope=review.subjects.filter(s=>selected==='all'||s.subject===selected);
+    return `<section class="panel audit-overview course-review"><span class="eyebrow">COURS & FICHES · RELECTURE DU ${esc(dateLabel(review.date))}</span><h2>Ce que couvre cette relecture</h2><p>Les textes disponibles ont été lus et comparés, annexes comprises. Les points signalés sont accompagnés d’explications et de sources ; les passages révisés se lisent avec leur contexte, et l’original reste accessible.</p><div class="audit-subjects">${scope.map(s=>`<div><strong>${esc(subjectName(s.subject))}</strong><span>${esc(s.scope)}</span></div>`).join('')}</div><p class="small">${esc(review.scope)}</p><p class="small">Les téléchargements conservent les documents reçus. Les corrections ajoutées sont intégrées à la lecture sur le site.</p></section>`;
   }
 
   function favoritesPage() {
@@ -561,7 +573,7 @@
     if(!term)return header('Chercher une notion.','Entre un mot pour retrouver les passages des cours, fiches, corrections et compléments.','RECHERCHE');
     const results=[];
     if(kind!=='supports')for(const d of D.documents.filter(d=>['cours','fiche','officiel'].includes(d.kind)&&(selected==='all'||d.subject===selected)&&(kind==='all'||d.kind===kind))){
-      for(const p of d.paragraphs)if(normalize(p.text).includes(term)){const ns=passageNotes(d.id,p.index),corrected=ns.some(n=>['Correction','Mise à jour'].includes(n.kind));results.push({subject:d.subject,label:documentLabel(d)+(corrected?' · Passage corrigé':''),text:corrected?ns.map(n=>n.title+' : '+n.text).join(' '):p.text,url:`#document/${d.id}/${p.index}`,hasCorrection:passageNotes(d.id,p.index).length>0});}
+      for(const p of d.paragraphs){const ns=passageNotes(d.id,p.index),revision=readingRevisions.get(d.id+':'+p.index),corrected=!!revision||ns.some(n=>['Correction','Mise à jour'].includes(n.kind)),explanation=ns.map(n=>n.title+' : '+n.text).join(' '),text=revision?revision.text:corrected?explanation:p.text;if(normalize(p.text+' '+text+' '+explanation).includes(term))results.push({subject:d.subject,label:documentLabel(d)+(corrected?' · Passage corrigé':''),text,url:`#document/${d.id}/${p.index}`,hasCorrection:ns.length>0});}
     }
     if(kind==='all'||kind==='supports'){
       const added=[

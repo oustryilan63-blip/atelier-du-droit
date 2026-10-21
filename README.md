@@ -1,5 +1,13 @@
 # L’Atelier du droit
 
+## Cours et fiches relus · 21 octobre 2026
+
+Les dix documents de cours et fiches disponibles ont été lus et comparés dans les quatre matières : 5 321 paragraphes, annexes comprises, et 38 chapitres. La relecture ajoute 99 notes et complète cinq annotations existantes en conservant leur identité et leur historique. Les 217 notes recensent des corrections, actualisations, précisions et compléments ; elles ne sont pas toutes des erreurs de fond.
+
+Pour 144 passages, une couche de lecture corrigée conserve le contexte utile, avec les explications et références à déplier et le texte original accessible séparément. Les documents téléchargés restent inchangés. La frise d’histoire reprend la précision sur la promulgation du Code Théodosien et son entrée en vigueur dans les deux parties de l’Empire. Deux rubriques brèves du CM privé sont complétées : règles supplétives et adoption de la loi.
+
+Les vérifications ciblées s’appuient sur des sources primaires, institutionnelles et universitaires. Elles ne constituent pas une validation du professeur ni une garantie absolue d’absence d’erreur. Histoire reste limitée au cours actuel jusqu’au CM5 ; les cinq chapitres UNJF d’international sont des ajouts distincts de la suite du CM officiel, encore non reçue. Les quiz, cartes, identifiants et données personnelles de progression sont conservés.
+
 ## Réviser avec l’actualité · 21 octobre 2026
 
 La rubrique propose un parcours de rappel actif par matière, limité à trois brèves récentes par séance, et un accès à chaque exemple séparément. La question apparaît sans les faits ni la correction ; après une réponse écrite ou orale, la comparaison explique l’institution, la portée et la notion du cours. Une reformulation peut se faire avec le modèle à nouveau caché. Le bilan permet de reprendre les seuls points déclarés À revoir ; aucune maîtrise ni note n’est déduite automatiquement.
@@ -52,7 +60,7 @@ Les dix-huit réponses personnelles restent sur l’appareil et figurent dans la
 
 Espace personnel de révision du semestre 1 de L1 Droit, publié sur GitHub Pages.
 
-Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 38 chapitres. Il propose 292 flashcards, 117 questions de quiz avec correction, 104 repères chronologiques, vingt et un schémas de révision, treize fiches de lecture d’articles officiels et trente-six entrées consacrées aux auteurs et juristes. Quinze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories. Une rubrique rassemble 118 corrections, actualisations, précisions et limites repérées dans les documents.
+Le site rassemble le droit public, le droit privé, les institutions internationales et l’histoire du droit, organisés en 38 chapitres. Il propose 292 flashcards, 117 questions de quiz avec correction, 104 repères chronologiques, vingt et un schémas de révision, treize fiches de lecture d’articles officiels et trente-six entrées consacrées aux auteurs et juristes. Quinze mini-fiches complémentaires proposent des exemples et exercices corrigés ; la bibliographie du cours d’institutions internationales rassemble 45 références dans cinq catégories. Une rubrique rassemble 217 corrections, actualisations, précisions et compléments repérés dans les documents.
 
 [Ouvrir le site](https://oustryilan63-blip.github.io/atelier-du-droit/)
 
@@ -97,7 +105,7 @@ Le fichier `index.html` est l’entrée du site. Les fichiers `data.js`, `app.js
 - Le plan officiel et les ressources UNJF sont issus de la copie locale du projet. Moodle reste la référence actuelle du cours d’institutions internationales.
 - Le CM d’institutions internationales transmis s’arrête aux fondements des immunités diplomatiques. Cinq chapitres complémentaires poursuivent les thèmes du plan à partir des leçons UNJF et des fiches fournies, avec les précisions nécessaires tirées de la Convention de Vienne, de la Charte, du Statut de la CIJ et de sources officielles de l’ONU et du CICR. Ils traitent la diplomatie, les règlements juridictionnels, la force, le droit humanitaire et la responsabilité de protéger. Le cours et ses fiches sont téléchargeables en Word, dans la présentation des fiches reçues. Ces supports restent explicitement distincts du CM du professeur ; les nouvelles séances permettront de vérifier leur alignement avec son enseignement.
 - Une phrase de la section consacrée à la doctrine, en droit privé, est tronquée dans le fichier transmis. Elle est signalée sans inventer sa suite ; la fiche reste consultable séparément.
-- Le fichier du projet nommé Syllabus est une archive contenant un plan de cours. Le véritable syllabus 2026–2027 reste à fournir.
+- Pour les consignes 2026–2027, le plan et le syllabus officiels de Moodle restent les références. Les copies d’archives ne permettent pas d’inventer une consigne manquante.
 
 Les notes personnelles, favoris, réponses aux quiz, brouillons de méthodologie et progrès sont enregistrés dans le navigateur de chaque visiteur. Ils ne sont pas envoyés à GitHub. Leur sauvegarde peut être exportée et restaurée depuis Mon espace personnel. Le format de sauvegarde conserve la version 1, les anciens identifiants de cartes et les données déjà enregistrées ; les nouveaux champs de méthodologie sont facultatifs dans une ancienne sauvegarde.
 
